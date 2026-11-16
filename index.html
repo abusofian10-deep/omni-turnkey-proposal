@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Omni Turnkey — 90-Day Parallel Transformation & Brand Relaunch Plan for Food Factory in Al Rusayl, Muscat, Oman.">
+  <title>Omni Turnkey | أومني تيرنكي للاستشارات الإدارية والحوكمة والتحول الرقمي</title>
+
+  <!-- Google Fonts: Noto Sans Arabic & Noto Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Production Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Modular Data & Application Controller -->
+  <script src="data.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     STICKY TWO-TIER EXECUTIVE HEADER & NAVIGATION
+══════════════════════════════════════════════════════════════ -->
+<header id="app-header" class="top-header">
+  <div class="header-inner">
+    <!-- Top Row: Brand & Language Switcher -->
+    <div class="header-top-row">
+      <div class="header-brand" onclick="goHome()" title="Home / الرئيسية">
+        <div class="logo-frame">
+          <img src="logo.png" alt="Omni Turnkey" class="brand-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="logo-fallback-badge">OMNI TURNKEY</div>
+        </div>
+        <div class="brand-text-block">
+          <span class="brand-title" data-i18n="brand_title">أومني تيرنكي للاستشارات الإدارية والحوكمة والتحول الرقمي</span>
+        </div>
+      </div>
+
+      <div class="header-top-actions">
+        <button id="lang-toggle" class="lang-btn" onclick="toggleLanguage()" aria-label="Toggle Language">
+          <span class="lang-icon">🌐</span>
+          <span id="lang-toggle-text" data-i18n="lang_toggle">English</span>
+        </button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Navigation Menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Row: Full Navigation Bar -->
+    <div class="header-bottom-row">
+      <nav class="desktop-nav" id="desktop-nav">
+        <button class="nav-btn nav-btn-home active" onclick="goHome()" data-tab="home" data-i18n="nav_home"></button>
+        <button class="nav-btn" onclick="switchTab('vision')" data-tab="vision" data-i18n="nav_1"></button>
+        <button class="nav-btn" onclick="switchTab('departments')" data-tab="departments" data-i18n="nav_2"></button>
+        <button class="nav-btn" onclick="switchTab('products')" data-tab="products" data-i18n="nav_3"></button>
+        <button class="nav-btn" onclick="switchTab('roadmap')" data-tab="roadmap" data-i18n="nav_4"></button>
+        <button class="nav-btn" onclick="switchTab('deliverables')" data-tab="deliverables" data-i18n="nav_deliverables"></button>
+        <button class="nav-btn" onclick="switchTab('workforce')" data-tab="workforce" data-i18n="nav_5"></button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Mobile Nav Drawer -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-header">
+      <div class="logo-frame logo-frame-mobile" onclick="goHome()">
+        <img src="logo.png" alt="Omni Turnkey" class="brand-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="logo-fallback-badge">OMNI TURNKEY</div>
+      </div>
+      <span class="brand-title-mobile" data-i18n="brand_title"></span>
+    </div>
+    <button class="mobile-nav-btn mobile-nav-btn-home active" onclick="goHome()" data-tab="home" data-i18n="nav_home"></button>
+    <button class="mobile-nav-btn" onclick="switchTab('vision')" data-tab="vision" data-i18n="nav_1"></button>
+    <button class="mobile-nav-btn" onclick="switchTab('departments')" data-tab="departments" data-i18n="nav_2"></button>
+    <button class="mobile-nav-btn" onclick="switchTab('products')" data-tab="products" data-i18n="nav_3"></button>
+    <button class="mobile-nav-btn" onclick="switchTab('roadmap')" data-tab="roadmap" data-i18n="nav_4"></button>
+    <button class="mobile-nav-btn" onclick="switchTab('deliverables')" data-tab="deliverables" data-i18n="nav_deliverables"></button>
+    <button class="mobile-nav-btn" onclick="switchTab('workforce')" data-tab="workforce" data-i18n="nav_5"></button>
+  </nav>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════════════════════════════ -->
+<section class="hero-section" id="hero-section">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-badge" data-i18n="hero_badge"></div>
+    <h1 class="hero-title" data-i18n="hero_title"></h1>
+    <p class="hero-subtitle" data-i18n="hero_subtitle"></p>
+    <div class="hero-meta">
+      <span class="hero-meta-item">📍 <span data-i18n="hero_location"></span></span>
+      <span class="hero-meta-sep">|</span>
+      <span class="hero-meta-item">📋 <span data-i18n="hero_client"></span></span>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-i18n="hero_stat1_num"></div>
+        <div class="hero-stat-label" data-i18n="hero_stat1_label"></div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-i18n="hero_stat2_num"></div>
+        <div class="hero-stat-label" data-i18n="hero_stat2_label"></div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-i18n="hero_stat3_num"></div>
+        <div class="hero-stat-label" data-i18n="hero_stat3_label"></div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-i18n="hero_stat4_num"></div>
+        <div class="hero-stat-label" data-i18n="hero_stat4_label"></div>
+      </div>
+    </div>
+    <div class="hero-nav-hint">
+      <button class="scroll-cta" onclick="switchTab('vision')">
+        <span data-i18n="nav_1"></span>
+        <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MAIN APPLICATION CONTENT
+══════════════════════════════════════════════════════════════ -->
+<main id="main-content">
+
+  <!-- ─────────────────────────────────────────────────────────
+       VIEW 1: EXECUTIVE VISION & QUALITY-COST GATE
+  ───────────────────────────────────────────────────────────── -->
+  <section class="view-section active" id="view-1">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-badge">01</div>
+        <h2 class="section-title" data-i18n="v1_title"></h2>
+        <p class="section-subtitle" data-i18n="v1_subtitle"></p>
+      </div>
+
+      <!-- Tactile Comparison Switch (Crimson Red / Emerald Green) -->
+      <div class="comparison-switch-wrapper">
+        <button class="comparison-side-label" id="label-chaotic" onclick="setComparisonState('chaotic')">
+          <span class="side-title" data-i18n="v1_toggle_before"></span>
+          <span class="side-sub" data-i18n="v1_toggle_before_sub"></span>
+        </button>
+
+        <div class="tactile-switch-track state-omni" id="tactile-switch-track" onclick="toggleComparisonSwitch()" title="Click to toggle comparison state">
+          <div class="tactile-switch-thumb" id="tactile-switch-thumb"></div>
+        </div>
+
+        <button class="comparison-side-label active" id="label-omni" onclick="setComparisonState('omni')">
+          <span class="side-title" data-i18n="v1_toggle_after"></span>
+          <span class="side-sub" data-i18n="v1_toggle_after_sub"></span>
+        </button>
+      </div>
+
+      <!-- Comparison Cards Grid with Dynamic Motion Keyframes -->
+      <div class="comparison-grid" id="comparison-grid">
+        <!-- Chaotic Card (Right in RTL) -->
+        <div class="comparison-card card-chaotic dimmed" id="card-chaotic">
+          <div class="card-header-bar bar-chaotic">
+            <span class="bar-icon">🚨</span>
+            <h3 data-i18n="v1_before_title"></h3>
+          </div>
+          <div class="comparison-list" id="chaotic-list"></div>
+        </div>
+
+        <!-- Omni Turnkey Card (Left in RTL) -->
+        <div class="comparison-card card-omni active-motion" id="card-omni">
+          <div class="card-header-bar bar-omni">
+            <span class="bar-icon">🛡️</span>
+            <h3 data-i18n="v1_after_title"></h3>
+          </div>
+          <div class="comparison-list" id="omni-list"></div>
+        </div>
+      </div>
+
+      <!-- Mandatory Quality & Actual Costing Gate -->
+      <div class="gate-section">
+        <div class="gate-header-box">
+          <div class="gate-lock-icon">🔒</div>
+          <h3 class="gate-title" data-i18n="v1_gate_title"></h3>
+          <p class="gate-subtitle" data-i18n="v1_gate_subtitle"></p>
+        </div>
+        <div class="gate-steps">
+          <div class="gate-step">
+            <div class="gate-step-badge">1</div>
+            <div class="gate-step-icon">🔬</div>
+            <h4 data-i18n="v1_gate_1_title"></h4>
+            <p data-i18n="v1_gate_1_body"></p>
+          </div>
+          <div class="gate-connector-arrow">
+            <span class="arrow-dynamic">←</span>
+          </div>
+          <div class="gate-step">
+            <div class="gate-step-badge">2</div>
+            <div class="gate-step-icon">💰</div>
+            <h4 data-i18n="v1_gate_2_title"></h4>
+            <p data-i18n="v1_gate_2_body"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────
+       VIEW 2: 5 DEPARTMENTS FIELD ACTION PLAN
+  ───────────────────────────────────────────────────────────── -->
+  <section class="view-section" id="view-2">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-badge">02</div>
+        <h2 class="section-title" data-i18n="v2_title"></h2>
+        <p class="section-subtitle" data-i18n="v2_subtitle"></p>
+      </div>
+
+      <div class="departments-stack" id="departments-stack"></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────
+       VIEW 3: 5 PRODUCT LINES MATRIX
+  ───────────────────────────────────────────────────────────── -->
+  <section class="view-section" id="view-3">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-badge">03</div>
+        <h2 class="section-title" data-i18n="v3_title"></h2>
+        <p class="section-subtitle" data-i18n="v3_subtitle"></p>
+      </div>
+
+      <div class="products-grid" id="products-grid"></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────
+       VIEW 4: TRUE HORIZONTAL 90-DAY ROADMAP & 16 SOW DELIVERABLES
+  ───────────────────────────────────────────────────────────── -->
+  <section class="view-section" id="view-4">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-badge">04</div>
+        <h2 class="section-title" data-i18n="v4_title"></h2>
+        <p class="section-subtitle" data-i18n="v4_subtitle"></p>
+      </div>
+
+      <!-- TRUE HORIZONTAL 5-TRACK CONCURRENT MATRIX -->
+      <div class="matrix-section">
+        <div class="matrix-heading-box">
+          <h3 class="matrix-main-title" data-i18n="v4_matrix_title"></h3>
+          <p class="matrix-sub-title" data-i18n="v4_matrix_subtitle"></p>
+        </div>
+
+        <!-- Stage Headers with Dynamic Directional Arrows -->
+        <div class="matrix-stage-headers">
+          <div class="matrix-stage-header stage-col-1">
+            <span class="stage-tag">Stage 1</span>
+            <span class="stage-name" data-i18n="v4_stage1_header"></span>
+          </div>
+          <div class="matrix-stage-arrow">
+            <span class="roadmap-arrow-dynamic">←</span>
+          </div>
+          <div class="matrix-stage-header stage-col-2">
+            <span class="stage-tag">Stage 2</span>
+            <span class="stage-name" data-i18n="v4_stage2_header"></span>
+          </div>
+          <div class="matrix-stage-arrow">
+            <span class="roadmap-arrow-dynamic">←</span>
+          </div>
+          <div class="matrix-stage-header stage-col-3">
+            <span class="stage-tag">Stage 3</span>
+            <span class="stage-name" data-i18n="v4_stage3_header"></span>
+          </div>
+        </div>
+
+        <!-- 5 Horizontal Tracks Rows Container -->
+        <div class="matrix-rows-container" id="matrix-rows-container"></div>
+      </div>
+
+      <!-- 16 CONTRACTUAL SOW DELIVERABLES -->
+      <div class="sow-section">
+        <div class="sow-heading-box">
+          <h3 class="sow-main-title" data-i18n="v4_sow_title"></h3>
+          <p class="sow-sub-title" data-i18n="v4_sow_subtitle"></p>
+        </div>
+
+        <!-- Filter Pills -->
+        <div class="sow-filter-bar">
+          <button class="sow-filter-pill active" onclick="filterSow('all')" data-filter="all" data-i18n="v4_filter_all"></button>
+          <button class="sow-filter-pill" onclick="filterSow('brand')" data-filter="brand" data-i18n="v4_filter_brand"></button>
+          <button class="sow-filter-pill" onclick="filterSow('gov')" data-filter="gov" data-i18n="v4_filter_gov"></button>
+          <button class="sow-filter-pill" onclick="filterSow('ops')" data-filter="ops" data-i18n="v4_filter_ops"></button>
+          <button class="sow-filter-pill" onclick="filterSow('erp')" data-filter="erp" data-i18n="v4_filter_erp"></button>
+        </div>
+
+        <!-- Deliverables Grid -->
+        <div class="sow-grid" id="sow-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────
+       VIEW 5: LEAN WORKFORCE REALIGNMENT
+  ───────────────────────────────────────────────────────────── -->
+  <section class="view-section" id="view-5">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-badge">05</div>
+        <h2 class="section-title" data-i18n="v5_title"></h2>
+        <p class="section-subtitle" data-i18n="v5_subtitle"></p>
+      </div>
+
+      <!-- Sub-Block A: Current Core Team (13 Staff) -->
+      <div class="workforce-block">
+        <div class="workforce-sub-header">
+          <h3 class="workforce-sub-title" data-i18n="v5_current_title">الفريق الأساسي الحالي (13 فرداً)</h3>
+          <div class="gold-fading-divider"></div>
+        </div>
+        <div class="core-team-grid" id="staff-grid"></div>
+      </div>
+
+      <!-- Sub-Block B: Dark Navy Mandatory New Hire Box (#0F2942) -->
+      <div class="mandatory-hire-box" id="mandatory-hire-box">
+        <div class="hire-pill-badge" data-i18n="v5_hire_pill">الأسبوع الثالث</div>
+        <h3 class="hire-box-heading" data-i18n="v5_new_title">تعيين إجباري جديد</h3>
+        <div class="hire-inner-glass-row">
+          <div class="hire-icon-box">🗄️</div>
+          <div class="hire-details">
+            <h4 class="hire-title" data-i18n="v5_hire_role">أمين مخزن مستقل (تعيين حتمي)</h4>
+            <span class="hire-category" data-i18n="v5_hire_cat">إدارة المخازن</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-Block C: Outsourced Execution Arms -->
+      <div class="workforce-block workforce-outsource-block">
+        <div class="workforce-sub-header">
+          <h3 class="workforce-sub-title" data-i18n="v5_outsource_title">أذرع التنفيذ الخارجي (Outsourcing)</h3>
+          <div class="gold-fading-divider"></div>
+        </div>
+        <div class="outsource-grid" id="outsourced-list"></div>
+      </div>
+
+      <!-- Sub-Block D: Emerald Green 80% Capacity Scale Trigger Banner (#15803D) -->
+      <div class="scale-trigger-banner" id="scale-trigger-banner">
+        <h3 class="scale-trigger-title" data-i18n="v5_scale_title">🚀 محفز التوسع عند 80% طاقة إنتاجية</h3>
+        <p class="scale-trigger-desc" data-i18n="v5_scale_desc">عند الوصول إلى 80% من الطاقة الإنتاجية، يتم تفعيل شرط التعيين تلقائياً: مشرف إنتاج إضافي أو خط تعبئة ثانٍ — بتقييم ربع سنوي.</p>
+        <div class="scale-progress-container">
+          <div class="scale-progress-track">
+            <div class="scale-progress-fill" id="scale-progress-fill">
+              <span class="scale-progress-indicator">80%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CLEAN CORPORATE FOOTER (NO PERSONAL NAME / NO CLIENT ADDRESS)
+══════════════════════════════════════════════════════════════ -->
+<footer id="app-footer">
+  <div class="footer-inner">
+    <!-- Brand Identity in White Frame with Large Title -->
+    <div class="footer-brand">
+      <div class="logo-frame logo-frame-footer" onclick="goHome()" title="Home / الرئيسية">
+        <img src="logo.png" alt="Omni Turnkey" class="footer-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="logo-fallback-badge">OMNI TURNKEY</div>
+      </div>
+      <div class="footer-text-block" onclick="goHome()">
+        <span class="footer-brand-title" data-i18n="brand_title">أومني تيرنكي للاستشارات الإدارية والحوكمة والتحول الرقمي</span>
+        <div class="footer-lead-consultant">
+          <span class="footer-lead-name" data-i18n="footer_lead_name">محمود حميدة</span>
+          <span class="footer-lead-title" data-i18n="footer_lead_title">كبير المستشارين والشريك الإداري</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direct WhatsApp Action Button -->
+    <div class="footer-action-box">
+      <button class="footer-cta-whatsapp" onclick="openWhatsApp()" title="Direct Executive WhatsApp Connection">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span class="wa-text-wrap">
+          <span data-i18n="footer_whatsapp"></span>
+          <span class="wa-phone-number" dir="ltr">+968 92940008</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer-bottom-bar">
+    <span data-i18n="footer_copyright"></span>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FLOATING ACTION BUTTONS (FAB) — STRICTLY 3 BUTTONS
+══════════════════════════════════════════════════════════════ -->
+<div class="mobile-fab" id="mobile-fab">
+  <!-- 1: Green WhatsApp Circle -->
+  <button class="fab-btn fab-wa" onclick="openWhatsApp()" title="WhatsApp (+968 92940008)">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </button>
+  <!-- 2: Dark Blue Print Button -->
+  <button class="fab-btn fab-print" onclick="window.print()" title="Print Executive Summary">🖨️</button>
+  <!-- 3: Gold Scroll-To-Top Button -->
+  <button class="fab-btn fab-top" onclick="goHome()" title="Scroll To Top & Reset">↑</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODAL 1: PRODUCT DETAILS MODAL
+══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="product-modal-overlay" onclick="closeProductModal(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span class="modal-icon" id="modal-product-icon"></span>
+        <h3 class="modal-title" id="modal-product-name"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeProductModal()">&times;</button>
+    </div>
+    <div class="modal-weights" id="modal-product-weights"></div>
+    <div class="modal-sections">
+      <div class="modal-sec">
+        <div class="modal-sec-header">
+          <span class="modal-sec-icon">🔬</span>
+          <span class="modal-sec-title" id="modal-title-quality"></span>
+        </div>
+        <p class="modal-sec-text" id="modal-product-quality"></p>
+      </div>
+      <div class="modal-sec">
+        <div class="modal-sec-header">
+          <span class="modal-sec-icon">📦</span>
+          <span class="modal-sec-title" id="modal-title-storage"></span>
+        </div>
+        <p class="modal-sec-text" id="modal-product-storage"></p>
+      </div>
+      <div class="modal-sec">
+        <div class="modal-sec-header">
+          <span class="modal-sec-icon">💰</span>
+          <span class="modal-sec-title" id="modal-title-costing"></span>
+        </div>
+        <p class="modal-sec-text" id="modal-product-costing"></p>
+      </div>
+      <div class="modal-sec modal-sec-example">
+        <div class="modal-sec-header">
+          <span class="modal-sec-icon">🏭</span>
+          <span class="modal-sec-title" id="modal-product-ex-title"></span>
+        </div>
+        <p class="modal-sec-text" id="modal-product-ex-body"></p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-close" onclick="closeProductModal()" data-i18n="modal_close">إغلاق النافذة</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODAL 2: CONCRETE FACTORY EXAMPLE MODAL (ROADMAP & SOW)
+══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="example-modal-overlay" onclick="closeExampleModal(event)">
+  <div class="modal-card modal-card-large" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-badge-row">
+        <span class="modal-code-pill" id="modal-example-code"></span>
+        <span class="modal-stage-pill" id="modal-example-stage"></span>
+      </div>
+      <button class="modal-close-btn" onclick="closeExampleModal()">&times;</button>
+    </div>
+
+    <h3 class="modal-example-heading" id="modal-example-title"></h3>
+
+    <div class="modal-body-blocks">
+      <!-- 1: Action Scope -->
+      <div class="modal-detail-block block-scope">
+        <div class="detail-block-header">
+          <span class="detail-icon">🎯</span>
+          <h4 data-i18n="modal_scope_title">نطاق الإجراء التنفيذي</h4>
+        </div>
+        <p class="detail-text" id="modal-example-scope"></p>
+      </div>
+
+      <!-- 2: Concrete Factory Example -->
+      <div class="modal-detail-block block-concrete">
+        <div class="detail-block-header">
+          <span class="detail-icon">🏭</span>
+          <h4 data-i18n="modal_example_title">مثال تطبيقي ملموس من مصنع الروسيل</h4>
+        </div>
+        <div class="concrete-highlight-box">
+          <div class="concrete-subtitle" id="modal-example-subtitle"></div>
+          <p class="detail-text" id="modal-example-body"></p>
+        </div>
+      </div>
+
+      <!-- 3: Handover Output -->
+      <div class="modal-detail-block block-output">
+        <div class="detail-block-header">
+          <span class="detail-icon">📦</span>
+          <h4 data-i18n="modal_output_title">المخرجات الملموسة المسلّمة للإدارة</h4>
+        </div>
+        <div class="output-highlight-box" id="modal-example-output"></div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-modal-close" onclick="closeExampleModal()" data-i18n="modal_close">إغلاق النافذة</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CONFIRMATION TOAST NOTIFICATION
+══════════════════════════════════════════════════════════════ -->
+<div class="toast-notification" id="toast-notification">
+  <span class="toast-icon">✅</span>
+  <span class="toast-text" id="toast-text"></span>
+</div>
+
+</body>
+</html>
