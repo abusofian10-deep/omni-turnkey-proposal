@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════
    OMNI TURNKEY — RUSAYL PORTAL
-   app.js — Production Application Controller
+   app.js — Production Application Controller (7-View Architecture)
    Vanilla JavaScript, Zero Dependencies
 ══════════════════════════════════════════════════════════════ */
 
@@ -9,29 +9,28 @@
 // ── GLOBAL APPLICATION STATE ──────────────────────────────────
 let currentLang = 'ar';
 let currentTab = 'home';
-let comparisonState = 'omni'; // 'omni' or 'chaotic'
-let activeSowFilter = 'all';
-let capacityAnimated = false;
+let activeRoadmapMobilePhase = 'phase-1';
+let expandedTracks = {}; // trackId -> boolean
+let currentDeliverableModalIdx = 0;
 
 // ── INITIALIZATION ────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize default language (Arabic RTL)
   applyLanguage('ar', true);
 
-  // 2. Ensure ONLY 'Home' button has active state & gold border on load
+  // 2. Set initial active tab
   setActiveNavButton('home');
 
-  // 3. Render all dynamic content from data.js
+  // 3. Render all views
   renderAll();
 
-  // 4. Initialize comparison toggle state
-  setComparisonState('omni');
-
-  // 5. Attach global escape key listener for modals
+  // 4. Attach global escape key listener for all modals
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeProductModal();
-      closeExampleModal();
+      closeDeliverableModal();
+      closeFutureModal();
+      closeDeptModal();
       closeMobileMenu();
     }
   });
@@ -45,45 +44,33 @@ function toggleLanguage() {
   const nextLang = currentLang === 'ar' ? 'en' : 'ar';
   applyLanguage(nextLang, false);
 }
+window.toggleLanguage = toggleLanguage;
 
 function applyLanguage(lang, isInit) {
   currentLang = lang;
   const root = document.documentElement;
+  const targetDir = lang === 'ar' ? 'rtl' : 'ltr';
 
-  // Set document direction and language code
   root.lang = lang;
-  root.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  root.dir = targetDir;
+
+  // Enforce direction on main sections and modals
+  document.querySelectorAll('.view-section, .modal-card').forEach(el => {
+    el.setAttribute('dir', targetDir);
+  });
 
   // Update static text elements with [data-i18n]
   translateStaticElements(lang);
 
-  // Update toggle button text
+  // Update language toggle button text
   const toggleBtnText = document.getElementById('lang-toggle-text');
   if (toggleBtnText && window.portalData?.[lang]) {
     toggleBtnText.textContent = window.portalData[lang].lang_toggle;
   }
 
-  // Re-render dynamic components
+  // Re-render all views with the new language
   if (!isInit) {
-    // Preserve open department state
-    const openDept = document.querySelector('.dept-card.open');
-    const openDeptId = openDept ? openDept.getAttribute('data-dept-id') : null;
-
     renderAll();
-
-    if (openDeptId) {
-      const targetDept = document.querySelector(`.dept-card[data-dept-id="${openDeptId}"]`);
-      if (targetDept) targetDept.classList.add('open');
-    }
-
-    // Re-apply comparison state for animations
-    setComparisonState(comparisonState);
-
-    // Re-trigger capacity bar if workforce view is active
-    if (currentTab === 'workforce') {
-      capacityAnimated = false;
-      setTimeout(animateCapacity, 250);
-    }
   }
 }
 
@@ -99,13 +86,21 @@ function translateStaticElements(lang) {
   });
 }
 
-function t(key) {
-  return window.portalData?.[currentLang]?.[key] ?? key;
-}
+// ══════════════════════════════════════════════════════════════
+// NAVIGATION CONTROLLER & 7-VIEW STRICT ISOLATION
+// ══════════════════════════════════════════════════════════════
 
-// ══════════════════════════════════════════════════════════════
-// NAVIGATION & ACTIVE GOLD BORDER LOGIC
-// ══════════════════════════════════════════════════════════════
+const VIEW_MAP = {
+  home:         { viewId: 'view-vision',       scrollToTop: true },
+  vision:       { viewId: 'view-vision',       scrollToTop: false },
+  departments:  { viewId: 'view-departments',  scrollToTop: false },
+  lines:        { viewId: 'view-lines',        scrollToTop: false },
+  roadmap:      { viewId: 'view-roadmap',      scrollToTop: false },
+  deliverables: { viewId: 'view-deliverables', scrollToTop: false },
+  workforce:    { viewId: 'view-workforce',    scrollToTop: false },
+  outsourcing:  { viewId: 'view-outsourcing',  scrollToTop: false },
+  future:       { viewId: 'view-future',       scrollToTop: false }
+};
 
 function setActiveNavButton(tabKey) {
   // Update desktop nav buttons
@@ -134,46 +129,38 @@ function switchTab(tabKey) {
   setActiveNavButton(tabKey);
   closeMobileMenu();
 
-  // Map tabs to view containers
-  const viewMap = {
-    home: { viewId: 'view-1', targetSelector: null, scrollTo: 'top' },
-    vision: { viewId: 'view-1', targetSelector: '#view-1', scrollTo: 'section' },
-    departments: { viewId: 'view-2', targetSelector: '#view-2', scrollTo: 'section' },
-    products: { viewId: 'view-3', targetSelector: '#view-3', scrollTo: 'section' },
-    roadmap: { viewId: 'view-4', targetSelector: '#view-4', scrollTo: 'section' },
-    deliverables: { viewId: 'view-4', targetSelector: '.sow-section', scrollTo: 'element' },
-    workforce: { viewId: 'view-5', targetSelector: '#view-5', scrollTo: 'section' }
-  };
+  const config = VIEW_MAP[tabKey] || VIEW_MAP.vision;
 
-  const target = viewMap[tabKey] || viewMap.home;
+  // Strict View Isolation: Deactivate all view sections, activate only target view
+  document.querySelectorAll('.view-section').forEach(sec => {
+    sec.classList.remove('active');
+    sec.style.display = 'none';
+  });
 
-  // Deactivate all views, activate target view
-  document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-  const targetView = document.getElementById(target.viewId);
-  if (targetView) targetView.classList.add('active');
+  const targetView = document.getElementById(config.viewId);
+  if (targetView) {
+    targetView.classList.add('active');
+    targetView.style.display = 'block';
+  }
 
-  // Handle scrolling
-  if (target.scrollTo === 'top' || tabKey === 'home') {
+  // Smooth Scroll
+  if (config.scrollToTop || tabKey === 'home') {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else {
     const headerH = document.getElementById('app-header')?.offsetHeight || 116;
-    const targetEl = target.targetSelector ? document.querySelector(target.targetSelector) : document.getElementById(target.viewId);
-    if (targetEl) {
-      const topPos = targetEl.getBoundingClientRect().top + window.pageYOffset - headerH - 12;
+    if (targetView) {
+      const topPos = targetView.getBoundingClientRect().top + window.pageYOffset - headerH - 12;
       window.scrollTo({ top: Math.max(0, topPos), behavior: 'smooth' });
     }
   }
-
-  // Trigger capacity bar on workforce tab
-  if (tabKey === 'workforce' && !capacityAnimated) {
-    setTimeout(animateCapacity, 350);
-  }
 }
+window.switchTab = switchTab;
 
-// Global click-to-home handler on all logos and Home button
 function goHome() {
   closeProductModal();
-  closeExampleModal();
+  closeDeliverableModal();
+  closeFutureModal();
+  closeDeptModal();
   closeMobileMenu();
   switchTab('home');
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -184,151 +171,155 @@ function toggleMobileMenu() {
   const nav = document.getElementById('mobile-nav');
   nav?.classList.toggle('open');
 }
+window.toggleMobileMenu = toggleMobileMenu;
 
 function closeMobileMenu() {
   const nav = document.getElementById('mobile-nav');
   nav?.classList.remove('open');
 }
+window.closeMobileMenu = closeMobileMenu;
 
 // ══════════════════════════════════════════════════════════════
-// TACTILE BEFORE/AFTER COMPARISON SWITCH & MOTION
-// ══════════════════════════════════════════════════════════════
-
-function toggleComparisonSwitch() {
-  const nextState = comparisonState === 'omni' ? 'chaotic' : 'omni';
-  setComparisonState(nextState);
-}
-
-function setComparisonState(state) {
-  comparisonState = state;
-  const track = document.getElementById('tactile-switch-track');
-  const labelChaotic = document.getElementById('label-chaotic');
-  const labelOmni = document.getElementById('label-omni');
-  const cardChaotic = document.getElementById('card-chaotic');
-  const cardOmni = document.getElementById('card-omni');
-
-  if (!track || !cardChaotic || !cardOmni) return;
-
-  if (state === 'chaotic') {
-    // Track turns Vibrant Crimson Red (#DC2626) with red glow
-    track.classList.remove('state-omni');
-    track.classList.add('state-chaotic');
-
-    labelChaotic?.classList.add('active');
-    labelOmni?.classList.remove('active');
-
-    // Chaotic card triggers keyframe motion animation (scale & red glow)
-    cardChaotic.classList.remove('dimmed');
-    cardChaotic.classList.add('active-motion');
-
-    // Omni Turnkey card dims (opacity: 0.55)
-    cardOmni.classList.remove('active-motion');
-    cardOmni.classList.add('dimmed');
-  } else {
-    // Track turns Vibrant Emerald Green (#059669) with emerald glow
-    track.classList.remove('state-chaotic');
-    track.classList.add('state-omni');
-
-    labelOmni?.classList.add('active');
-    labelChaotic?.classList.remove('active');
-
-    // Omni Turnkey card triggers keyframe motion animation (scale & emerald glow)
-    cardOmni.classList.remove('dimmed');
-    cardOmni.classList.add('active-motion');
-
-    // Chaotic card dims (opacity: 0.55)
-    cardChaotic.classList.remove('active-motion');
-    cardChaotic.classList.add('dimmed');
-  }
-}
-
-// ══════════════════════════════════════════════════════════════
-// DYNAMIC SECTIONS RENDERER
+// MASTER RENDER ALL CONTROLLER
 // ══════════════════════════════════════════════════════════════
 
 function renderAll() {
-  renderComparisonLists();
-  renderDepartments();
+  renderVisionSection();
+  renderDepartmentsSection();
+  renderProductMatrixFramingDisclaimer();
   renderProducts();
-  renderRoadmapMatrix();
-  renderSowDeliverables();
-  renderWorkforce();
+  renderRoadmapStages();
+  renderDeliverables16();
+  renderWorkforceSection();
+  renderOutsourcingSection();
+  renderFutureVisionSection();
 }
 
-// ── View 1: Comparison Lists ─────────────────────────────────
-function renderComparisonLists() {
-  const chaoticList = document.getElementById('chaotic-list');
-  const omniList = document.getElementById('omni-list');
-  const data = window.portalData?.comparisonData;
-  if (!chaoticList || !omniList || !data) return;
+// ─────────────────────────────────────────────────────────────
+// 1. VIEW: EXECUTIVE VISION (Preamble + 10 Problem/Solution Pairs)
+// ─────────────────────────────────────────────────────────────
+function renderVisionSection() {
+  const preambleContainer = document.getElementById('exec-preamble-box');
+  const pairsContainer = document.getElementById('vision-pairs-grid');
+  const preamble = window.EXECUTIVE_PREAMBLE || window.proposalData?.EXECUTIVE_PREAMBLE;
+  const pairs = window.EXECUTIVE_VISION_10_PAIRS || window.proposalData?.EXECUTIVE_VISION_10_PAIRS;
 
   const isAr = currentLang === 'ar';
 
-  chaoticList.innerHTML = data.chaotic.map(item => `
-    <div class="comparison-item">
-      <span class="comp-item-icon">${item.icon}</span>
-      <div class="comp-item-content">
-        <h4>${escHtml(isAr ? item.title_ar : item.title_en)}</h4>
-        <p>${escHtml(isAr ? item.desc_ar : item.desc_en)}</p>
+  // Render Preamble
+  if (preambleContainer && preamble) {
+    preambleContainer.innerHTML = `
+      <div class="preamble-inner-card">
+        <div class="preamble-header-bar">
+          <span class="preamble-badge">${isAr ? 'الديباجة التنفيذية المعتمدة' : 'Official Executive Preamble'}</span>
+          <h3 class="preamble-title">${escHtml(preamble.title[currentLang])}</h3>
+        </div>
+        <div class="preamble-meta-grid">
+          <div class="preamble-meta-item">
+            <span class="meta-label">👤 ${isAr ? 'مُقدّمة إلى:' : 'Submitted to:'}</span>
+            <p class="meta-val">${escHtml(preamble.submittedTo[currentLang])}</p>
+          </div>
+          <div class="preamble-meta-item">
+            <span class="meta-label">🏢 ${isAr ? 'إعداد وتنفيذ:' : 'Prepared by:'}</span>
+            <p class="meta-val">${escHtml(preamble.preparedBy[currentLang])}</p>
+          </div>
+        </div>
+        <div class="preamble-mandate-box">
+          <span class="mandate-icon">🎯</span>
+          <p class="mandate-text">${escHtml(preamble.mandate[currentLang])}</p>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }
 
-  omniList.innerHTML = data.omni.map(item => `
-    <div class="comparison-item">
-      <span class="comp-item-icon">${item.icon}</span>
-      <div class="comp-item-content">
-        <h4>${escHtml(isAr ? item.title_ar : item.title_en)}</h4>
-        <p>${escHtml(isAr ? item.desc_ar : item.desc_en)}</p>
+  // Render 10 Pairs
+  if (pairsContainer && pairs) {
+    pairsContainer.innerHTML = pairs.map(pair => `
+      <div class="vision-pair-card">
+        <div class="vision-pair-problem">
+          <div class="pair-card-header bar-problem">
+            <span class="pair-badge red">🚨 ${isAr ? 'التحدي الواقعي' : 'Operational Challenge'} 0${pair.id}</span>
+          </div>
+          <h4 class="pair-heading">${escHtml(pair.problemTitle[currentLang])}</h4>
+          <p class="pair-desc">${escHtml(pair.problemDesc[currentLang])}</p>
+        </div>
+        <div class="vision-pair-solution">
+          <div class="pair-card-header bar-solution">
+            <span class="pair-badge green">🛡️ ${isAr ? 'حل Omni Turnkey التنفيذي' : 'Omni Turnkey Solution'} 0${pair.id}</span>
+          </div>
+          <h4 class="pair-heading">${escHtml(pair.solutionTitle[currentLang])}</h4>
+          <p class="pair-desc">${escHtml(pair.solutionDesc[currentLang])}</p>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+  }
 }
 
-// ── View 2: 5 Departments ────────────────────────────────────
-function renderDepartments() {
-  const stack = document.getElementById('departments-stack');
-  const depts = window.portalData?.departmentsData;
-  if (!stack || !depts) return;
+// ─────────────────────────────────────────────────────────────
+// 2. VIEW: 5 CORE DEPARTMENTS
+// ─────────────────────────────────────────────────────────────
+let currentDeptIndex = 0;
 
+function renderDepartmentsSection() {
+  const grid = document.getElementById('departments-grid');
+  const disclaimer = document.getElementById('departments-disclaimer');
+  const depts = window.FIVE_CORE_DEPARTMENTS || (typeof FIVE_CORE_DEPARTMENTS !== 'undefined' ? FIVE_CORE_DEPARTMENTS : []);
+  const disc = window.GLOBAL_DISCLAIMERS || (typeof GLOBAL_DISCLAIMERS !== 'undefined' ? GLOBAL_DISCLAIMERS : null);
   const isAr = currentLang === 'ar';
 
-  stack.innerHTML = depts.map(dept => `
-    <div class="dept-card" data-dept-id="${dept.id}" id="dept-card-${dept.id}">
-      <div class="dept-card-header" onclick="toggleDept(${dept.id})">
-        <div class="dept-header-left">
-          <span class="dept-icon">${dept.icon}</span>
-          <span class="dept-code-tag">${dept.code}</span>
-          <h3 class="dept-title">${escHtml(isAr ? dept.title_ar : dept.title_en)}</h3>
-        </div>
-        <svg class="dept-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M6 9l6 6 6-6"/>
-        </svg>
+  if (disclaimer && disc && disc.illustrativeFooter) {
+    disclaimer.innerHTML = `
+      <div class="matrix-framing-badge">
+        <span class="framing-icon">⚠️</span>
+        <span class="framing-title">${isAr ? 'تنويه منهجي واستيضاح استرشادي' : 'Methodological & Benchmark Note'}</span>
       </div>
-      <div class="dept-card-body">
-        <div class="dept-scope-box">
-          ${escHtml(isAr ? dept.scope_ar : dept.scope_en)}
+      <p class="matrix-framing-text">${disc.illustrativeFooter[currentLang] || disc.illustrativeFooter.ar}</p>
+    `;
+  }
+
+  if (!grid || !depts || !depts.length) return;
+
+  grid.innerHTML = depts.map((dept, idx) => {
+    const title = dept.title[currentLang] || dept.title.ar;
+    const summary = dept.summary[currentLang] || dept.summary.ar;
+    const badgeText = isAr ? 'محور أساسي' : 'Core Pillar';
+    const actionText = isAr ? 'فتح نافذة القسم والتطبيق الملموس' : 'Open Department & Example Window';
+
+    return `
+      <div class="dept-card" onclick="openDeptModal(${idx})">
+        <div class="dept-card-top">
+          <div class="dept-card-header">
+            <span class="dept-card-num">${dept.number}</span>
+            <span class="dept-card-pill">${badgeText}</span>
+          </div>
+          <h3 class="dept-card-title">${title}</h3>
+          <p class="dept-card-summary">${summary}</p>
         </div>
-        <div class="dept-checklist-title">📋 ${isAr ? 'قائمة التحقق الميدانية والإجراءات التشغيلية' : 'Field Operational Checklist & SOPs'}:</div>
-        <ul class="checklist-items">
-          ${(isAr ? dept.checklist_ar : dept.checklist_en).map(chk => `
-            <li class="checklist-item">
-              <span class="check-icon">✓</span>
-              <span>${escHtml(chk)}</span>
-            </li>
-          `).join('')}
-        </ul>
+        <div class="dept-card-footer">
+          <span class="dept-action-text">${actionText}</span>
+          <span class="dept-action-arrow">↗</span>
+        </div>
       </div>
+    `;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────────────────────
+// 3. VIEW: 5 PRODUCT LINES MATRIX
+// ─────────────────────────────────────────────────────────────
+function renderProductMatrixFramingDisclaimer() {
+  const box = document.getElementById('matrix-framing-disclaimer');
+  if (!box) return;
+  const isAr = currentLang === 'ar';
+  const text = window.GLOBAL_DISCLAIMERS?.matrixFraming?.[currentLang] || '';
+  box.innerHTML = `
+    <div class="disclaimer-inner">
+      <span class="disclaimer-badge">${isAr ? 'إطار توضيحي استرشادي' : 'Illustrative Framework'}</span>
+      <p class="disclaimer-text">${escHtml(text)}</p>
     </div>
-  `).join('');
+  `;
 }
 
-function toggleDept(deptId) {
-  const card = document.getElementById('dept-card-' + deptId);
-  card?.classList.toggle('open');
-}
-
-// ── View 3: 5 Product Lines ──────────────────────────────────
 function renderProducts() {
   const grid = document.getElementById('products-grid');
   const prods = window.portalData?.productLinesData;
@@ -370,157 +361,326 @@ function renderProducts() {
   `).join('');
 }
 
-// ── View 4: TRUE HORIZONTAL 5-TRACK CONCURRENT ROADMAP MATRIX ─
-function renderRoadmapMatrix() {
-  const container = document.getElementById('matrix-rows-container');
-  const matrix = window.portalData?.roadmapMatrix;
-  if (!container || !matrix) return;
+// ─────────────────────────────────────────────────────────────
+// 3. VIEW: 90-DAY TIME-BASED ROADMAP (Expandable Tracks)
+// ─────────────────────────────────────────────────────────────
+function setActiveRoadmapMobilePhase(phaseId) {
+  activeRoadmapMobilePhase = phaseId;
+  renderRoadmapStages();
+}
+window.setActiveRoadmapMobilePhase = setActiveRoadmapMobilePhase;
+
+function toggleTrack(trackId) {
+  expandedTracks[trackId] = !expandedTracks[trackId];
+  renderRoadmapStages();
+}
+window.toggleTrack = toggleTrack;
+
+function renderRoadmapStages() {
+  const tabsContainer = document.getElementById('roadmap-phase-tabs');
+  const gridContainer = document.getElementById('roadmap-phases-grid');
+  const disclaimerBox = document.getElementById('roadmap-disclaimer-box');
+  const btnGoto = document.getElementById('btn-goto-deliverables');
+  const phases = window.ROADMAP_90_DAYS_PHASES || window.proposalData?.ROADMAP_90_DAYS_PHASES;
+  if (!gridContainer || !phases) return;
 
   const isAr = currentLang === 'ar';
 
-  container.innerHTML = matrix.map((track, trackIdx) => {
-    const trackName = isAr ? track.trackName_ar : track.trackName_en;
-    return `
-      <div class="matrix-track-row">
-        <div class="track-row-title">
-          <span>🚀</span>
-          <span>${escHtml(trackName)}</span>
+  // Render Mobile Phase Tabs
+  if (tabsContainer) {
+    tabsContainer.innerHTML = phases.map(phase => {
+      const isActive = phase.id === activeRoadmapMobilePhase;
+      const label = phase.tabLabel[currentLang];
+      return `
+        <button class="roadmap-phase-tab-btn ${isActive ? 'active' : ''}" onclick="setActiveRoadmapMobilePhase('${phase.id}')">
+          ${escHtml(label)}
+        </button>
+      `;
+    }).join('');
+  }
+
+  // Render 3 Phases (Desktop: 3 parallel columns, Mobile: visible based on activeRoadmapMobilePhase)
+  gridContainer.innerHTML = phases.map((phase, idx) => {
+    const isMobileActive = phase.id === activeRoadmapMobilePhase;
+    const tabLabel = phase.tabLabel[currentLang];
+    const title = phase.title[currentLang];
+    const gateText = phase.unifiedPhaseGate[currentLang];
+
+    const tracksHtml = phase.tracks.map(tr => {
+      const trackName = tr.trackName[currentLang];
+      const summary = tr.summary[currentLang];
+      const isExpanded = !!expandedTracks[tr.id];
+      const example = tr.practicalExample ? tr.practicalExample[currentLang] : '';
+      const deliverables = tr.managementDeliverables ? tr.managementDeliverables[currentLang] : [];
+
+      return `
+        <div class="roadmap-track-item ${isExpanded ? 'is-expanded' : ''}">
+          <button class="track-header-btn" onclick="toggleTrack('${tr.id}')" aria-expanded="${isExpanded}">
+            <div class="track-header-title-box">
+              <span class="track-dot"></span>
+              <strong>${escHtml(trackName)}</strong>
+            </div>
+            <span class="track-expand-pill">${isExpanded ? (isAr ? 'إغلاق ▲' : 'Collapse ▲') : (isAr ? 'التفاصيل ▼' : 'Details ▼')}</span>
+          </button>
+          <p class="roadmap-track-summary">${escHtml(summary)}</p>
+
+          ${isExpanded ? `
+            <div class="track-expanded-content">
+              ${example ? `
+                <div class="track-example-box">
+                  <div class="example-box-header">
+                    <span class="example-icon">💡</span>
+                    <span class="example-tag">${isAr ? 'مثال تطبيقي (كمثال استرشادي تقريبي*)' : 'Practical Example (Illustrative Benchmark*)'}</span>
+                  </div>
+                  <p class="example-box-text">${escHtml(example)}</p>
+                </div>
+              ` : ''}
+
+              ${deliverables && deliverables.length > 0 ? `
+                <div class="track-deliverables-box">
+                  <div class="deliverables-box-header">
+                    <span class="deliv-icon">📦</span>
+                    <span class="deliv-tag">${isAr ? 'المخرجات المسلّمة للإدارة:' : 'Handover Deliverables to Leadership:'}</span>
+                  </div>
+                  <ul class="deliverables-list">
+                    ${deliverables.map(d => `<li><span class="deliv-check">✓</span><span>${escHtml(d)}</span></li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+            </div>
+          ` : ''}
         </div>
-        <div class="track-cells-grid">
-          <!-- Stage 1 -->
-          ${renderMatrixCell(track.stages[0], trackIdx, 0, isAr)}
+      `;
+    }).join('');
 
-          <!-- Arrow 1 -> 2 -->
-          <div class="cell-arrow-col">
-            <span class="roadmap-arrow-dynamic"></span>
+    return `
+      <div class="roadmap-phase-card ${isMobileActive ? 'mobile-active' : ''}" data-phase="${phase.id}">
+        <div class="roadmap-phase-header">
+          <span class="roadmap-phase-pill">${escHtml(tabLabel)}</span>
+          <span class="roadmap-phase-num">0${idx + 1}</span>
+        </div>
+        <h3 class="roadmap-phase-title">${escHtml(title)}</h3>
+        <div class="roadmap-tracks-list">
+          ${tracksHtml}
+        </div>
+        <div class="roadmap-convergence-box">
+          <div class="convergence-header">
+            <span class="convergence-icon">🎯</span>
+            <span class="convergence-label">${isAr ? 'بوابة التلاقي والانطلاق الموحدة' : 'Unified Phase Gate & Convergence'}</span>
           </div>
-
-          <!-- Stage 2 -->
-          ${renderMatrixCell(track.stages[1], trackIdx, 1, isAr)}
-
-          <!-- Arrow 2 -> 3 -->
-          <div class="cell-arrow-col">
-            <span class="roadmap-arrow-dynamic"></span>
-          </div>
-
-          <!-- Stage 3 -->
-          ${renderMatrixCell(track.stages[2], trackIdx, 2, isAr)}
+          <p class="convergence-text">${escHtml(gateText)}</p>
         </div>
       </div>
     `;
   }).join('');
+
+  // Render illustrative footer disclaimer
+  if (disclaimerBox) {
+    const discText = window.GLOBAL_DISCLAIMERS?.illustrativeFooter?.[currentLang] || '';
+    disclaimerBox.innerHTML = `
+      <p class="illustrative-disclaimer-text">${escHtml(discText)}</p>
+    `;
+  }
+
+  // Fast Navigation Button Text
+  if (btnGoto) {
+    btnGoto.innerHTML = `
+      <span>${isAr ? 'استعراض قائمة المخرجات التعاقدية الـ 16 الملموسة ←' : 'Explore the 16 Contractual SOW Deliverables →'}</span>
+    `;
+  }
 }
 
-function renderMatrixCell(stage, trackIdx, stageIdx, isAr) {
-  if (!stage) return '';
-  const days = isAr ? stage.days_ar : stage.days_en;
-  const title = isAr ? stage.title_ar : stage.title_en;
-  const milestones = isAr ? stage.milestones_ar : stage.milestones_en;
-  const btnLabel = isAr ? '🔍 مثال تطبيقي ملموس' : '🔍 Concrete Factory Example';
+// ─────────────────────────────────────────────────────────────
+// 4. VIEW: 16 CONTRACTUAL SOW DELIVERABLES (Clickable Cards)
+// ─────────────────────────────────────────────────────────────
+function renderDeliverables16() {
+  const grid = document.getElementById('deliverables-grid');
+  const disclaimerBox = document.getElementById('deliverables-disclaimer-box');
+  const items = window.DELIVERABLES_16_LIST || window.proposalData?.DELIVERABLES_16_LIST;
+  if (!grid || !items) return;
 
-  return `
-    <div class="matrix-cell">
-      <div>
-        <span class="cell-days-badge">${escHtml(days)}</span>
-        <h4 class="cell-title">${escHtml(title)}</h4>
-        <ul class="cell-milestones">
-          ${milestones.map(m => `
-            <li class="cell-milestone-item">
-              <span class="cell-milestone-dot">•</span>
-              <span>${escHtml(m)}</span>
-            </li>
-          `).join('')}
-        </ul>
+  const isAr = currentLang === 'ar';
+
+  grid.innerHTML = items.map((item, idx) => {
+    const code = item.code;
+    const phase = item.phase[currentLang];
+    const title = item.title[currentLang];
+    const summary = item.summary[currentLang];
+
+    return `
+      <div class="deliverable-card" onclick="openDeliverableModal(${idx})" title="${isAr ? 'انقر لعرض تفاصيل المخرج' : 'Click to view deliverable details'}">
+        <div class="deliverable-card-header">
+          <span class="deliverable-code-badge">${escHtml(code)}</span>
+          <span class="deliverable-phase-badge">${escHtml(phase)}</span>
+        </div>
+        <h3 class="deliverable-title">${escHtml(title)}</h3>
+        <p class="deliverable-scope">${escHtml(summary)}</p>
+        <div class="deliverable-card-action">
+          <span class="action-link">${isAr ? 'عرض المواصفات والمخرجات المسلّمة ↗' : 'View Specifications & Handover ↗'}</span>
+        </div>
       </div>
-      <button class="btn-cell-example" onclick="openRoadmapModal(${trackIdx}, ${stageIdx})">
-        ${escHtml(btnLabel)}
-      </button>
+    `;
+  }).join('');
+
+  if (disclaimerBox) {
+    const discText = window.GLOBAL_DISCLAIMERS?.illustrativeFooter?.[currentLang] || '';
+    disclaimerBox.innerHTML = `
+      <p class="illustrative-disclaimer-text">${escHtml(discText)}</p>
+    `;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// 5. VIEW: WORKFORCE (Leadership + 11 Staff + Outsourcing Note)
+// ─────────────────────────────────────────────────────────────
+function renderWorkforceSection() {
+  const container = document.getElementById('workforce-content');
+  const data = window.WORKFORCE_DATA || window.proposalData?.WORKFORCE_DATA;
+  if (!container || !data) return;
+
+  const isAr = currentLang === 'ar';
+  const leadership = data.executiveLeadership;
+  const operational = data.operationalTeam;
+  const outsourcingNote = data.outsourcingLinkNote[currentLang];
+
+  const leadershipHtml = leadership.members.map(m => `
+    <div class="leadership-card">
+      <div class="leader-icon-box">${m.icon}</div>
+      <div class="leader-info">
+        <span class="leader-role">${escHtml(m.role[currentLang])}</span>
+        <h4 class="leader-name">${escHtml(m.name[currentLang])}</h4>
+        <p class="leader-scope">${escHtml(m.scope[currentLang])}</p>
+      </div>
+    </div>
+  `).join('');
+
+  container.innerHTML = `
+    <div class="workforce-wrapper">
+      <!-- Section 1: Executive Leadership -->
+      <div class="workforce-block">
+        <div class="block-header">
+          <h3 class="block-title">${escHtml(leadership.heading[currentLang])}</h3>
+          <div class="gold-fading-divider"></div>
+        </div>
+        <div class="leadership-grid">
+          ${leadershipHtml}
+        </div>
+      </div>
+
+      <!-- Section 2: Operational Team (11 Staff) -->
+      <div class="workforce-block operational-block">
+        <div class="block-header">
+          <h3 class="block-title">${escHtml(operational.heading[currentLang])}</h3>
+          <div class="gold-fading-divider"></div>
+        </div>
+        <div class="operational-team-card">
+          <div class="operational-badge-row">
+            <span class="op-badge">11 ${isAr ? 'كادراً تشغيلياً وفنياً' : 'Operational & Technical Staff'}</span>
+            <span class="op-badge-sub">Biometric ERP Sync</span>
+          </div>
+          <p class="operational-desc">${escHtml(operational.description[currentLang])}</p>
+        </div>
+      </div>
+
+      <!-- Section 3: Outsourcing Callout Banner -->
+      <div class="outsourcing-callout-card">
+        <div class="callout-content">
+          <div class="callout-icon">🤝</div>
+          <p class="callout-text">${escHtml(outsourcingNote)}</p>
+        </div>
+        <button class="btn-goto-outsourcing" onclick="switchTab('outsourcing')">
+          ${isAr ? 'استعراض أذرع التنفيذ الخارجي الـ 4 ←' : 'Explore the 4 External Execution Arms →'}
+        </button>
+      </div>
     </div>
   `;
 }
 
-// ── View 4: 16 SOW Deliverables ──────────────────────────────
-function renderSowDeliverables() {
-  const grid = document.getElementById('sow-grid');
-  const items = window.portalData?.sowDeliverables;
-  if (!grid || !items) return;
+// ─────────────────────────────────────────────────────────────
+// 6. VIEW: EXTERNAL OUTSOURCING PAGE (4 Execution Arms)
+// ─────────────────────────────────────────────────────────────
+function renderOutsourcingSection() {
+  const container = document.getElementById('outsourcing-content');
+  const data = window.EXTERNAL_OUTSOURCING_PAGE_DATA || window.proposalData?.EXTERNAL_OUTSOURCING_PAGE_DATA;
+  if (!container || !data) return;
 
   const isAr = currentLang === 'ar';
-  const filtered = activeSowFilter === 'all'
-    ? items
-    : items.filter(d => d.dept === activeSowFilter);
+  const arms = data.arms;
 
-  grid.innerHTML = filtered.map(item => {
-    const originalIdx = items.indexOf(item);
-    return `
-      <div class="sow-card">
-        <div>
-          <div class="sow-card-header">
-            <span class="sow-code-badge">${escHtml(item.code)}</span>
-            <span class="sow-phase-badge">${escHtml(isAr ? item.phase_ar : item.phase_en)}</span>
-          </div>
-          <h4 class="sow-title">${escHtml(isAr ? item.title_ar : item.title_en)}</h4>
-          <p class="sow-scope-preview">${escHtml(isAr ? item.scope_ar : item.scope_en)}</p>
-        </div>
-        <button class="btn-cell-example" onclick="openSowModal(${originalIdx})">
-          ${isAr ? '🔍 مثال تطبيقي ملموس' : '🔍 Concrete Factory Example'}
+  const armsHtml = arms.map((arm, idx) => `
+    <div class="arm-card">
+      <div class="arm-header">
+        <span class="arm-icon">${arm.icon}</span>
+        <span class="arm-num">0${idx + 1}</span>
+      </div>
+      <h3 class="arm-title">${escHtml(arm.title[currentLang])}</h3>
+      <p class="arm-detail">${escHtml(arm.detail[currentLang])}</p>
+    </div>
+  `).join('');
+
+  container.innerHTML = `
+    <div class="outsourcing-wrapper">
+      <div class="outsourcing-grid">
+        ${armsHtml}
+      </div>
+
+      <div class="outsourcing-footer-nav">
+        <button class="btn-goto-future" onclick="switchTab('future')">
+          ${isAr ? 'الانتقال إلى الرؤية المستقبلية (الأتمتة والذكاء الاصطناعي) 🚀 ←' : 'Proceed to Future Vision (Automation & AI) 🚀 →'}
         </button>
       </div>
-    `;
-  }).join('');
+    </div>
+  `;
 }
 
-function filterSow(filterKey) {
-  activeSowFilter = filterKey;
-  document.querySelectorAll('.sow-filter-pill').forEach(pill => {
-    pill.classList.toggle('active', pill.getAttribute('data-filter') === filterKey);
-  });
-  renderSowDeliverables();
-}
-
-// ── View 5: Lean Workforce (13 Staff + Outsourcing) ───────────
-function renderWorkforce() {
-  const staffGrid = document.getElementById('staff-grid');
-  const outsourcedList = document.getElementById('outsourced-list');
-  const wf = window.portalData?.workforceData;
-  if (!staffGrid || !outsourcedList || !wf) return;
+// ─────────────────────────────────────────────────────────────
+// 7. VIEW: FUTURE VISION 🚀 (Automation & AI Standalone Page)
+// ─────────────────────────────────────────────────────────────
+function renderFutureVisionSection() {
+  const container = document.getElementById('future-content');
+  const data = window.AUTOMATION_NEXT_PHASE_BLOCK || window.proposalData?.AUTOMATION_NEXT_PHASE_BLOCK;
+  if (!container || !data) return;
 
   const isAr = currentLang === 'ar';
 
-  // Sub-Block A: 13 Core Team Cards
-  staffGrid.innerHTML = wf.currentStaff.map(st => `
-    <div class="core-team-card">
-      <div class="team-card-icon-box">${st.icon}</div>
-      <div class="team-card-info">
-        <h4 class="team-card-title">${escHtml(isAr ? st.title_ar : st.title_en)}</h4>
-        <span class="team-card-category">${escHtml(isAr ? st.category_ar : st.category_en)}</span>
+  container.innerHTML = `
+    <div class="future-vision-card">
+      <div class="future-header">
+        <span class="future-badge">${escHtml(data.badge[currentLang])}</span>
+        <h2 class="future-main-title">${escHtml(data.title[currentLang])}</h2>
+      </div>
+
+      <div class="future-notes-grid">
+        <div class="future-note-box">
+          <div class="note-box-icon">📌</div>
+          <h4 class="note-box-title">${escHtml(data.strategicNoteTitle[currentLang])}</h4>
+          <p class="note-box-text">${escHtml(data.strategicNoteBody[currentLang])}</p>
+        </div>
+        <div class="future-note-box">
+          <div class="note-box-icon">⚙️</div>
+          <h4 class="note-box-title">${escHtml(data.whyGovernanceFirstTitle[currentLang])}</h4>
+          <p class="note-box-text">${escHtml(data.whyGovernanceFirstBody[currentLang])}</p>
+        </div>
+      </div>
+
+      <div class="future-cta-box">
+        <div class="cta-text-side">
+          <h3 class="cta-plan-title">${escHtml(data.standalonePlanTitle[currentLang])}</h3>
+          <p class="cta-plan-intro">${escHtml(data.standalonePlanIntro[currentLang])}</p>
+        </div>
+        <button class="btn-open-future-modal" onclick="openFutureModal()">
+          <span>${isAr ? 'فتح نافذة خطة الأتمتة والذكاء الاصطناعي ↗' : 'Open Automation & AI Plan Modal ↗'}</span>
+        </button>
       </div>
     </div>
-  `).join('');
-
-  // Sub-Block C: 4 Outsourced Execution Arms
-  outsourcedList.innerHTML = wf.outsourced.map(os => `
-    <div class="outsource-card">
-      <div class="outsource-icon-box">${os.icon}</div>
-      <div class="outsource-info">
-        <h4 class="outsource-title">${escHtml(isAr ? os.title_ar : os.title_en)}</h4>
-        <span class="outsource-category">${escHtml(isAr ? os.category_ar : os.category_en)}</span>
-      </div>
-    </div>
-  `).join('');
-}
-
-function animateCapacity() {
-  const fill = document.getElementById('scale-progress-fill');
-  if (fill) fill.style.width = '80%';
-  capacityAnimated = true;
+  `;
 }
 
 // ══════════════════════════════════════════════════════════════
-// MODAL CONTROLLERS (PRODUCT & CONCRETE EXAMPLE)
+// MODALS LOGIC
 // ══════════════════════════════════════════════════════════════
 
-// ── Modal 1: Product Modal ───────────────────────────────────
+// ── Modal 1: Product Specs Modal ──────────────────────────────
 function openProductModal(productId) {
   const prod = window.portalData?.productLinesData?.find(p => p.id === productId);
   if (!prod) return;
@@ -548,6 +708,7 @@ function openProductModal(productId) {
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+window.openProductModal = openProductModal;
 
 function closeProductModal(e) {
   if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close-btn') && !e.target.classList.contains('btn-modal-close')) return;
@@ -555,69 +716,197 @@ function closeProductModal(e) {
   overlay?.classList.remove('open');
   document.body.style.overflow = '';
 }
+window.closeProductModal = closeProductModal;
 
-// ── Modal 2: Concrete Factory Example Modal ───────────────────
-function openRoadmapModal(trackIdx, stageIdx) {
-  const track = window.portalData?.roadmapMatrix?.[trackIdx];
-  const stage = track?.stages?.[stageIdx];
-  if (!track || !stage) return;
+// ── Modal 2: Deliverable Details Modal (with Prev / Next) ──────
+function openDeliverableModal(idx) {
+  const items = window.DELIVERABLES_16_LIST || window.proposalData?.DELIVERABLES_16_LIST;
+  if (!items || idx < 0 || idx >= items.length) return;
 
+  currentDeliverableModalIdx = idx;
+  const item = items[idx];
   const isAr = currentLang === 'ar';
-  const trackName = isAr ? track.trackName_ar : track.trackName_en;
-  const stageDays = isAr ? stage.days_ar : stage.days_en;
-
-  showExampleModal({
-    code: `Track ${track.trackId} — Stage ${stage.stageNum}`,
-    stage: stageDays,
-    title: `${trackName} (${stageDays})`,
-    scope: isAr ? stage.scope_ar : stage.scope_en,
-    subtitle: isAr ? stage.title_ar : stage.title_en,
-    body: isAr ? stage.example_ar : stage.example_en,
-    output: isAr ? stage.output_ar : stage.output_en
-  });
-}
-
-function openSowModal(sowIdx) {
-  const item = window.portalData?.sowDeliverables?.[sowIdx];
-  if (!item) return;
-
-  const isAr = currentLang === 'ar';
-  showExampleModal({
-    code: item.code,
-    stage: isAr ? item.phase_ar : item.phase_en,
-    title: isAr ? item.title_ar : item.title_en,
-    scope: isAr ? item.scope_ar : item.scope_en,
-    subtitle: `${item.code} — ${isAr ? item.title_ar : item.title_en}`,
-    body: isAr ? item.example_ar : item.example_en,
-    output: isAr ? item.output_ar : item.output_en
-  });
-}
-
-function showExampleModal(data) {
-  const overlay = document.getElementById('example-modal-overlay');
+  const overlay = document.getElementById('deliverable-modal-overlay');
   if (!overlay) return;
 
-  document.getElementById('modal-example-code').textContent = data.code;
-  document.getElementById('modal-example-stage').textContent = data.stage;
-  document.getElementById('modal-example-title').textContent = data.title;
-  document.getElementById('modal-example-scope').textContent = data.scope;
-  document.getElementById('modal-example-subtitle').textContent = data.subtitle;
-  document.getElementById('modal-example-body').textContent = data.body;
-  document.getElementById('modal-example-output').textContent = data.output;
+  // Set Labels
+  document.getElementById('deliv-modal-summary-label').textContent = isAr ? 'نطاق المخرج التنفيذي' : 'Executive Deliverable Scope';
+  document.getElementById('deliv-modal-handover-label').textContent = isAr ? 'المخرجات الملموسة المسلّمة للإدارة' : 'Tangible Handover Deliverables';
+  document.getElementById('deliv-modal-example-label').textContent = isAr ? 'مثال تطبيقي ملموس (كمثال استرشادي تقريبي*)' : 'Concrete Practical Example (Illustrative Benchmark*)';
+  document.getElementById('deliv-modal-criteria-label').textContent = isAr ? 'معيار القبول والاعتماد النهائي' : 'Acceptance & Sign-Off Criteria';
+
+  // Set Values
+  document.getElementById('deliv-modal-code').textContent = item.code;
+  document.getElementById('deliv-modal-phase').textContent = item.phase[currentLang];
+  document.getElementById('deliv-modal-title').textContent = item.title[currentLang];
+  document.getElementById('deliv-modal-summary').textContent = item.summary[currentLang];
+
+  const handoverList = document.getElementById('deliv-modal-handover');
+  if (handoverList) {
+    const listItems = item.handoverComponents ? item.handoverComponents[currentLang] : [];
+    handoverList.innerHTML = listItems.map(h => `<li><span class="deliv-bullet">📦</span><span>${escHtml(h)}</span></li>`).join('');
+  }
+
+  document.getElementById('deliv-modal-example').textContent = item.practicalExample[currentLang];
+  document.getElementById('deliv-modal-criteria').textContent = item.acceptanceCriteria[currentLang];
+
+  // Update Prev / Next Buttons State
+  const prevBtn = document.getElementById('deliv-btn-prev');
+  const nextBtn = document.getElementById('deliv-btn-next');
+  if (prevBtn) prevBtn.disabled = (idx === 0);
+  if (nextBtn) nextBtn.disabled = (idx === items.length - 1);
 
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+window.openDeliverableModal = openDeliverableModal;
 
-function closeExampleModal(e) {
+function navigateDeliverableModal(direction) {
+  const nextIdx = currentDeliverableModalIdx + direction;
+  openDeliverableModal(nextIdx);
+}
+window.navigateDeliverableModal = navigateDeliverableModal;
+
+function closeDeliverableModal(e) {
   if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close-btn') && !e.target.classList.contains('btn-modal-close')) return;
-  const overlay = document.getElementById('example-modal-overlay');
+  const overlay = document.getElementById('deliverable-modal-overlay');
   overlay?.classList.remove('open');
   document.body.style.overflow = '';
 }
+window.closeDeliverableModal = closeDeliverableModal;
+
+// ── Modal 3: Future Vision Popup Modal (4 AI Pillars) ─────────
+function openFutureModal() {
+  const data = window.AUTOMATION_NEXT_PHASE_BLOCK || window.proposalData?.AUTOMATION_NEXT_PHASE_BLOCK;
+  if (!data) return;
+
+  const overlay = document.getElementById('future-modal-overlay');
+  if (!overlay) return;
+
+  document.getElementById('future-modal-badge').textContent = data.badge[currentLang];
+  document.getElementById('future-modal-plan-title').textContent = data.standalonePlanTitle[currentLang];
+  document.getElementById('future-modal-plan-intro').textContent = data.standalonePlanIntro[currentLang];
+
+  const pillarsContainer = document.getElementById('future-modal-pillars');
+  if (pillarsContainer) {
+    pillarsContainer.innerHTML = data.pillars.map((pil, idx) => `
+      <div class="future-pillar-card">
+        <div class="pillar-num">0${idx + 1}</div>
+        <h4 class="pillar-title">${escHtml(pil.title[currentLang])}</h4>
+        <p class="pillar-desc">${escHtml(pil.detail[currentLang])}</p>
+      </div>
+    `).join('');
+  }
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+window.openFutureModal = openFutureModal;
+
+function closeFutureModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close-btn') && !e.target.classList.contains('btn-modal-close')) return;
+  const overlay = document.getElementById('future-modal-overlay');
+  overlay?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.closeFutureModal = closeFutureModal;
+
+// ── Modal 4: Department Detail Popup Modal (5 Core Departments) ──
+function openDeptModal(idx) {
+  const depts = window.FIVE_CORE_DEPARTMENTS || (typeof FIVE_CORE_DEPARTMENTS !== 'undefined' ? FIVE_CORE_DEPARTMENTS : []);
+  if (!depts || idx < 0 || idx >= depts.length) return;
+
+  currentDeptIndex = idx;
+  const dept = depts[idx];
+  const isAr = currentLang === 'ar';
+
+  const overlay = document.getElementById('dept-modal-overlay');
+  const badge = document.getElementById('dept-modal-badge');
+  const title = document.getElementById('dept-modal-title');
+  const body = document.getElementById('dept-modal-body');
+  const btnPrev = document.getElementById('dept-btn-prev');
+  const btnNext = document.getElementById('dept-btn-next');
+  const prevLabel = document.getElementById('dept-prev-label');
+  const nextLabel = document.getElementById('dept-next-label');
+
+  if (badge) badge.textContent = dept.number;
+  if (title) title.textContent = dept.title[currentLang] || dept.title.ar;
+
+  if (body) {
+    const pillars = (dept.pillars && dept.pillars[currentLang]) || dept.pillars.ar || [];
+    const deliverables = (dept.deliverables && dept.deliverables[currentLang]) || dept.deliverables.ar || [];
+    const practicalExample = (dept.practicalExample && dept.practicalExample[currentLang]) || dept.practicalExample.ar || '';
+
+    body.innerHTML = `
+      <div class="dept-modal-block">
+        <h4 class="dept-modal-block-title">
+          <span>🎯</span> ${isAr ? 'محاور العمل والتطوير في هذا القسم:' : 'Key Operational & Governance Pillars:'}
+        </h4>
+        <ul class="dept-modal-list">
+          ${pillars.map(p => `<li><span class="bullet">●</span> <span>${p}</span></li>`).join('')}
+        </ul>
+      </div>
+
+      <div class="dept-modal-block example-block">
+        <h4 class="dept-modal-block-title example-title">
+          <span>💡</span> ${isAr ? 'النموذج التطبيقي الملموس (كمثال استرشادي تقريبي*):' : 'Practical Application Scenario (Illustrative Benchmark*):'}
+        </h4>
+        <p class="dept-modal-example-text">${practicalExample}</p>
+      </div>
+
+      <div class="dept-modal-block deliv-block">
+        <h4 class="dept-modal-block-title deliv-title">
+          <span>📦</span> ${isAr ? 'المخرجات الملموسة المرتبطة بالقسم:' : 'Associated Tangible Deliverables:'}
+        </h4>
+        <ul class="dept-modal-list deliv-list">
+          ${deliverables.map(d => `<li><span class="bullet">✔</span> <span>${d}</span></li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  // Update navigation buttons
+  if (prevLabel) prevLabel.textContent = isAr ? 'القسم السابق' : 'Previous';
+  if (nextLabel) nextLabel.textContent = isAr ? 'القسم التالي' : 'Next';
+
+  if (btnPrev) {
+    btnPrev.disabled = idx === 0;
+    btnPrev.style.opacity = idx === 0 ? '0.4' : '1';
+    btnPrev.style.cursor = idx === 0 ? 'not-allowed' : 'pointer';
+  }
+  if (btnNext) {
+    btnNext.disabled = idx === depts.length - 1;
+    btnNext.style.opacity = idx === depts.length - 1 ? '0.4' : '1';
+    btnNext.style.cursor = idx === depts.length - 1 ? 'not-allowed' : 'pointer';
+  }
+
+  if (overlay) {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+window.openDeptModal = openDeptModal;
+
+function closeDeptModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close-btn') && !e.target.classList.contains('btn-modal-close')) return;
+  const overlay = document.getElementById('dept-modal-overlay');
+  overlay?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.closeDeptModal = closeDeptModal;
+
+function navigateDeptModal(dir) {
+  const depts = window.FIVE_CORE_DEPARTMENTS || (typeof FIVE_CORE_DEPARTMENTS !== 'undefined' ? FIVE_CORE_DEPARTMENTS : []);
+  if (!depts) return;
+  const newIdx = currentDeptIndex + dir;
+  if (newIdx >= 0 && newIdx < depts.length) {
+    openDeptModal(newIdx);
+  }
+}
+window.navigateDeptModal = navigateDeptModal;
 
 // ══════════════════════════════════════════════════════════════
-// BULLETPROOF DIRECT WHATSAPP CONNECTION (+968 92940008)
+// WHATSAPP & CLIPBOARD INTEGRATION (+968 92940008)
 // ══════════════════════════════════════════════════════════════
 
 function openWhatsApp() {

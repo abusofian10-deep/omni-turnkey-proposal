@@ -9,22 +9,37 @@ window.portalData = {
   ar: {
     // ── Header & Navigation ────────────────────────────────────
     brand_title: "أومني تيرنكي للاستشارات الإدارية والحوكمة والتحول الرقمي",
-    brand_tagline: "خطة التحول المتوازي وإعادة إطلاق العلامة التجارية (90 يوماً) — مصنع الروسيل، مسقط",
+    brand_tagline: "خطة التحول المتوازي وإعادة إطلاق العلامة التجارية (90 يوماً) — مصنع الرسيل، مسقط",
     nav_home: "الرئيسية",
+    nav_vision: "1. الرؤية التنفيذية",
+    nav_departments: "2. الأقسام الخمسة",
+    nav_lines: "3. خطوط المنتجات",
+    nav_roadmap: "4. خريطة الـ 90 يوماً",
+    nav_deliverables: "5. المخرجات (16)",
+    nav_workforce: "6. القوى العاملة",
+    nav_outsourcing: "7. أذرع التنفيذ الخارجي",
+    nav_future: "8. الرؤية المستقبلية 🚀",
     nav_1: "الرؤية التنفيذية",
     nav_2: "الأقسام الخمسة",
     nav_3: "الخطوط الخمسة",
     nav_4: "خارطة الـ 90 يوماً",
-    nav_deliverables: "المخرجات (16)",
-    nav_5: "القوى العاملة (13+1)",
+    nav_5: "القوى العاملة",
+    v_dept_title: "الأقسام الخمسة الرئيسية لمنظومة التحول وإعادة الهيكلة",
+    v_dept_subtitle: "اضغط على أي قسم لفتح نافذة المحاور التفصيلية، المخرجات المسلّمة، والنموذج التطبيقي الملموس.",
+    v_vision_title: "الرؤية التنفيذية وبوابة الاعتماد المزدوجة",
+    v_vision_subtitle: "10 تحديات تشغيلية واقعية تواجه المصنع مقابل 10 حلول مؤسسية حاسمة تقدمها منظومة Omni Turnkey.",
+    v_workforce_title: "القوى العاملة وإعادة الهيكلة — القيادة التنفيذية والفريق التشغيلي",
+    v_workforce_subtitle: "الهيكل التنظيمي المعتمد للمصنع: القيادة الإشرافية والتشغيلية (11 كادراً) بالتكامل مع أذرع التعهيد الخارجي.",
+    v_outsourcing_title: "أذرع التنفيذ الخارجي (External Execution Arms)",
+    v_outsourcing_subtitle: "4 أذرع متخصصة تعمل بالتوازي مع الكادر الداخلي لضمان أعلى درجات الاحترافية والتكلفة المرنة.",
     lang_toggle: "English",
 
     // ── Hero Section ───────────────────────────────────────────
     hero_badge: "برنامج التحول المؤسسي الشامل — مسقط، سلطنة عُمان",
     hero_title: "خطة الـ 90 يوماً المتوازية لإعادة هيكلة وتشغيل وتطوير مصنع الأغذية",
-    hero_subtitle: "منهجية متوازية صارمة تعالج الحوكمة، تكلفة الـ SKU الفعلية، جودة التعبئة والتغليف للخطوط الخمسة، وسلسلة التبريد، مع إعادة إطلاق Odoo ERP والسوشيال ميديا بالتزامن الفوري من اليوم الأول.",
-    hero_location: "مدينة الروسيل الصناعية (مدائن)، مسقط",
-    hero_client: "سعادة مالك المصنع & الفاضل/ سامح حسني",
+    hero_subtitle: "منهجية متوازية صارمة تعالج الحوكمة، تكلفة الـ SKU الفعلية، جودة التعبئة والتغليف للخطوط الخمسة، وسلسلة التبريد، مع استيراد الخامات وتعبئتها محلياً بقيمة مضافة، وتفعيل منظومة الـ ERP وحضور الـ B2B بالتزامن الفوري من اليوم الأول.",
+    hero_location: "مدينة الرسيل الصناعية (مدائن)، مسقط",
+    hero_client: "إدارة المصنع الموقرة",
     hero_stat1_num: "90",
     hero_stat1_label: "يوماً بالمسارات المتوازية (كحد أقصى)",
     hero_stat2_num: "5",
@@ -38,19 +53,19 @@ window.portalData = {
     v1_title: "الرؤية التنفيذية وبوابة الجودة والتكلفة",
     v1_subtitle: "المقارنة الجوهرية بين التخبط العشوائي السابق ومنظومة أومني تيرنكي، مع تفعيل بوابة فحص الجودة والتكلفة الصارمة قبل طباعة أي عبوة.",
     v1_toggle_before: "الوضع العشوائي السابق",
-    v1_toggle_before_sub: "أبرز الثغرات الحرجة (5 محاور استراتيجية)",
+    v1_toggle_before_sub: "أبرز الثغرات الحرجة (النمط السابق)",
     v1_toggle_after: "منظومة Omni Turnkey",
     v1_toggle_after_sub: "الحوكمة والتحول المتوازي المحكم",
     v1_before_title: "الوضع العشوائي السابق (الثغرات الحرجة)",
     v1_after_title: "منظومة Omni Turnkey المتوازية (الحلول التنفيذية)",
 
     // Gate
-    v1_gate_title: "بوابة الجودة والتكلفة الفعلية الإلزامية (Quality & COGS Gate)",
-    v1_gate_subtitle: "يُحظر حظراً باتاً التعاقد على طباعة رولات أو عبوات جديدة في دبي أو عُمان قبل اجتياز البوابة المزدوجة الموثقة:",
-    v1_gate_1_title: "المحور 1: الاعتماد المخبري ومطابقة مواصفات GSO",
-    v1_gate_1_body: "فحص العينات في مختبرات معتمدة، التحقق من مطابقة بطاقة البيان لمواصفات هيئة التقييس الخليجية، واختبار كفاءة صمامات تفريغ الهواء لصمامات القهوة وعزل عبوات الحليب والشاي.",
-    v1_gate_2_title: "المحور 2: حساب تكلفة الـ SKU الفعلية وهامش الربح",
-    v1_gate_2_body: "احتساب تكلفة الطن، هدر التشغيل، تكلفة العبوة، الكرتون، الكهرباء، وأجور العمال، لضمان تسعير يحقق هامش ربح لا يقل عن 22% قبل طرح المنتج بالأسواق.",
+    v1_gate_title: "بوابة الاعتماد المزدوجة (الجودة والتكلفة الفعلية)",
+    v1_gate_subtitle: "لضمان حماية هوامش الربحية وسلامة الموقف التنظيمي للشركة قبل أي التزام تجاري أو توسع بيعي، يتم تفعيل 'بوابة اعتماد مرحلية' (Stage-Gate Control) تسبق التعاقدات الإنتاجية أو طرح المنتجات في السوق، وترتكز على محورين أساسيين:",
+    v1_gate_1_title: "1. المطابقة الفنية والتنظيمية (Technical & GSO Compliance)",
+    v1_gate_1_body: "استيفاء الاشتراطات القياسية الخليجية (GSO) والفحوصات المعتمدة للمنتج وبيانات البطاقة الغذائية (Labeling) كمرجع أساسي قبل اعتماد التوريد أو الإطلاق التجاري.",
+    v1_gate_2_title: "2. اعتماد التكلفة الفعلية للوحدة (Validated SKU Costing)",
+    v1_gate_2_body: "إقرار بطاقة التكلفة الحقيقية لكل صنف (شاملة الخامات، التغليف، الهالك، والمصاريف التشغيلية) واعتماد هامش الربح المستهدف من الإدارة المالية قبل إصدار أي قائمة أسعار أو بدء التعاقدات البيعية.",
 
     // ── View 2: 5 Departments ──────────────────────────────────
     v2_title: "الأقسام الخمسة على أرض الواقع",
@@ -66,22 +81,16 @@ window.portalData = {
     v3_subtitle: "مواصفات الجودة، شروط التخزين، مكونات التكلفة، ومتطلبات التعبئة والتغليف لكل خط إنتاجي بالمصنع.",
     v3_view_details: "عرض المواصفات والمثال العملي",
 
-    // ── View 4: Roadmap & Deliverables ─────────────────────────
-    v4_title: "خارطة الـ 90 يوماً المتوازية ومصفوفة المسارات",
-    v4_subtitle: "مسارات متوازية تبدأ جميعها من الأسبوع الأول دون تأخير، مع أمثلة تطبيقية ملموسة من أرض المصنع ومخرجات تعاقدية محددة.",
-    v4_matrix_title: "المصفوفة الأفقية المتزامنة للمسارات الخمسة (90 يوماً)",
-    v4_matrix_subtitle: "جميع المسارات الخمسة تنطلق فوراً في اليوم الأول بالتوازي التام وتنتهي في اليوم 90.",
-    v4_stage1_header: "المرحلة الأولى (الأيام 1–30): التثبيت والتأسيس الفوري",
-    v4_stage2_header: "المرحلة الثانية (الأيام 31–60): بناء الأنظمة والاعتماد والتصميم",
-    v4_stage3_header: "المرحلة الثالثة (الأيام 61–90): الإطلاق السوقي والأتمتة الكاملة",
-    v4_btn_view_example: "🔍 مثال تطبيقي ملموس",
-    v4_sow_title: "قائمة المخرجات التعاقدية الـ 16 الملموسة (SOW Deliverables)",
-    v4_sow_subtitle: "تسليمات تنفيذية مستقلة مدعمة بنماذج عمل وأمثلة تطبيقية جاهزة للتطبيق الفوري.",
-    v4_filter_all: "جميع المخرجات (16)",
-    v4_filter_brand: "العلامة والتسويق (4)",
-    v4_filter_gov: "الحوكمة والمالية (4)",
-    v4_filter_ops: "العمليات والمستودعات (4)",
-    v4_filter_erp: "أنظمة Odoo ERP (4)",
+    // ── View 4: 90-Day Roadmap (Time-Based) ───────────────────
+    v4_title: "خارطة الطريق التنفيذية (90 يوماً) — التزامن المرحلي المتكامل",
+    v4_subtitle: "تم تصميم الخطة وفق منطق المراحل الزمنية المتزامنة لضمان تكامل كافة المسارات (الحوكمة، الـ ERP، سلاسل الإمداد، والهوية التجارية) في كل محطة تسليم.",
+    roadmap_section_title: "خارطة الطريق التنفيذية (90 يوماً) — التزامن المرحلي المتكامل",
+    roadmap_section_subtitle: "تم تصميم الخطة وفق منطق المراحل الزمنية المتزامنة لضمان تكامل كافة المسارات (الحوكمة، الـ ERP، سلاسل الإمداد، والهوية التجارية) في كل محطة تسليم.",
+    btn_explore_deliverables: "استعراض قائمة المخرجات التعاقدية الـ 16 الملموسة ←",
+
+    // ── View Deliverables: 16 SOW Deliverables ────────────────
+    deliverables_section_title: "قائمة المخرجات التعاقدية الملموسة (SOW Deliverables)",
+    deliverables_section_subtitle: "حزمة الوثائق، الأنظمة، والأصول التنفيذية المعتمدة للتسليم الفعلي لإدارة المصنع وفق الجدول الزمني المحدد.",
 
     // ── View 5: Lean Workforce ─────────────────────────────────
     v5_title: "القوى العاملة الرشيقة — 13 موظفاً + التعهيد الخارجي",
@@ -97,8 +106,10 @@ window.portalData = {
 
     // ── Modals & Toast ─────────────────────────────────────────
     modal_close: "إغلاق النافذة",
+    modal_prev: "السابق",
+    modal_next: "التالي",
     modal_scope_title: "نطاق الإجراء التنفيذي",
-    modal_example_title: "مثال تطبيقي ملموس من مصنع الروسيل",
+    modal_example_title: "مثال تطبيقي ملموس من مصنع الرسيل",
     modal_output_title: "المخرجات الملموسة المسلّمة للإدارة",
     toast_whatsapp_copied: "تم فتح واتساب ونسخ الرقم +968 92940008 للحافظة بنجاح",
 
@@ -115,20 +126,35 @@ window.portalData = {
     brand_title: "Omni Turnkey for Management Consulting, Governance & Digital Transformation",
     brand_tagline: "90-Day Parallel Transformation & Brand Relaunch Plan — Al Rusayl Factory, Muscat",
     nav_home: "Home",
+    nav_vision: "1. Executive Vision",
+    nav_departments: "2. 5 Core Departments",
+    nav_lines: "3. 5 Product Lines",
+    nav_roadmap: "4. 90-Day Roadmap",
+    nav_deliverables: "5. 16 Deliverables",
+    nav_workforce: "6. Workforce",
+    nav_outsourcing: "7. External Arms",
+    nav_future: "8. Future Vision 🚀",
     nav_1: "Executive Vision",
     nav_2: "5 Departments",
     nav_3: "Product Lines",
     nav_4: "90-Day Roadmap",
-    nav_deliverables: "Deliverables (16)",
     nav_5: "Lean Workforce",
+    v_dept_title: "The Five Core Departments of Institutional Restructuring",
+    v_dept_subtitle: "Click any department card to open its detailed window with pillars, deliverables, and practical application example.",
+    v_vision_title: "Executive Vision & Dual Approval Gate",
+    v_vision_subtitle: "10 Real-world operational challenges facing the factory paired with 10 decisive enterprise solutions engineered by Omni Turnkey.",
+    v_workforce_title: "Workforce & Operational Restructuring — Leadership & Plant Staff",
+    v_workforce_subtitle: "Approved organizational structure: Supervisory and operational staff (11 members) seamlessly integrated with external outsourcing arms.",
+    v_outsourcing_title: "External Execution Arms (Outsourcing)",
+    v_outsourcing_subtitle: "4 specialized execution partners working concurrently with internal staff to ensure maximum professional agility and cost elasticity.",
     lang_toggle: "عربي",
 
     // ── Hero Section ───────────────────────────────────────────
     hero_badge: "Comprehensive Enterprise Transformation — Muscat, Sultanate of Oman",
     hero_title: "90-Day Parallel Plan for Food Factory Restructuring, Operations & Brand Relaunch",
-    hero_subtitle: "A rigorous parallel methodology tackling governance, actual SKU costing, packaging quality across 5 product lines, and cold-chain integrity, with concurrent Odoo ERP and social media relaunch from Day 1.",
+    hero_subtitle: "A rigorous parallel methodology tackling governance, accurate SKU costing, packaging quality across 5 product lines, and cold-chain integrity, with raw material import and value-added local packaging, concurrent ERP and B2B digital launch from Day 1.",
     hero_location: "Al Rusayl Industrial City (Madayn), Muscat",
-    hero_client: "Factory Owner & Mr. Sameh Hosni",
+    hero_client: "Factory Executive Leadership",
     hero_stat1_num: "90",
     hero_stat1_label: "Days Strict Parallel Tracks (Maximum)",
     hero_stat2_num: "5",
@@ -142,19 +168,19 @@ window.portalData = {
     v1_title: "Executive Vision & Quality-Cost Gate",
     v1_subtitle: "The stark contrast between previous chaotic practices and the disciplined Omni Turnkey architecture, enforcing mandatory QC and actual costing approvals before any packaging print run.",
     v1_toggle_before: "Previous Chaotic State",
-    v1_toggle_before_sub: "Core Critical Red Flags (5 Strategic Pillars)",
+    v1_toggle_before_sub: "Core Critical Red Flags (Legacy Pattern)",
     v1_toggle_after: "Omni Turnkey System",
     v1_toggle_after_sub: "Disciplined Parallel Governance",
     v1_before_title: "Previous Chaotic State (Critical Red Flags)",
     v1_after_title: "Omni Turnkey Parallel Architecture (Engineered Solutions)",
 
     // Gate
-    v1_gate_title: "Mandatory Quality & Actual SKU Costing Gate",
-    v1_gate_subtitle: "Strictly prohibiting packaging cylinder engraving or print runs in Dubai/Oman before passing the dual verified gate:",
-    v1_gate_1_title: "Pillar 1: Lab Clearance & GSO Regulatory Compliance",
-    v1_gate_1_body: "Accredited lab testing, verification of bilingual food labeling against Gulf Standard Specifications (GSO), and barrier integrity testing (degassing valves for Coffee, oxygen/light barriers for Milk & Tea).",
-    v1_gate_2_title: "Pillar 2: Actual SKU Unit Costing & Gross Margin Clearance",
-    v1_gate_2_body: "Precise calculation of raw materials per ton, processing yield loss, packaging unit cost, cartons, utilities, and direct labor to lock in a minimum 22% gross margin prior to market launch.",
+    v1_gate_title: "Dual Approval Gate (Technical Compliance & Validated SKU Costing)",
+    v1_gate_subtitle: "To safeguard profit margins and regulatory compliance prior to any commercial commitment or market rollout, a mandatory Stage-Gate Control is enforced ahead of production contracting or commercial launch, anchored on two core pillars:",
+    v1_gate_1_title: "1. Technical & Regulatory Compliance (GSO & Labeling)",
+    v1_gate_1_body: "Full compliance with Gulf Standardization Organization (GSO) standards, accredited product testing, and nutritional labeling requirements as a mandatory baseline prior to supply approval or commercial launch.",
+    v1_gate_2_title: "2. Validated Unit Costing & Margin Sign-Off",
+    v1_gate_2_body: "Formal validation of each SKU’s true cost card (encompassing raw materials, packaging, standard scrap, and operational overhead) alongside Finance sign-off on target profit margins before issuing price lists or entering sales contracts.",
 
     // ── View 2: 5 Departments ──────────────────────────────────
     v2_title: "5 Departments Field Action Plan",
@@ -170,22 +196,16 @@ window.portalData = {
     v3_subtitle: "Quality technical specifications, storage protocols, unit costing components, and packaging standards across all 5 factory lines.",
     v3_view_details: "View Technical Specs & Concrete Example",
 
-    // ── View 4: Roadmap & Deliverables ─────────────────────────
-    v4_title: "90-Day Parallel Roadmap & SOW Matrix",
-    v4_subtitle: "Horizontal parallel tracks launching concurrently in Week 1 with zero sequential bottlenecks, supported by concrete factory examples and contractual deliverables.",
-    v4_matrix_title: "Horizontal 5-Track Concurrent Matrix (90 Days Capped)",
-    v4_matrix_subtitle: "All 5 strategic tracks launch concurrently on Day 1 and reach full maturity on Day 90.",
-    v4_stage1_header: "Stage 1 (Days 1–30): Immediate Stabilization & Foundation",
-    v4_stage2_header: "Stage 2 (Days 31–60): Systems Build, Packaging Redesign & Approvals",
-    v4_stage3_header: "Stage 3 (Days 61–90): Market Go-Live, Full Automation & Scale",
-    v4_btn_view_example: "🔍 Concrete Factory Example",
-    v4_sow_title: "16 Contractual SOW Deliverables",
-    v4_sow_subtitle: "Tangible executive deliverables backed by ready-to-deploy operational templates and concrete factory examples.",
-    v4_filter_all: "All Deliverables (16)",
-    v4_filter_brand: "Brand & Marketing (4)",
-    v4_filter_gov: "Governance & Finance (4)",
-    v4_filter_ops: "Operations & QC (4)",
-    v4_filter_erp: "IT & Odoo ERP (4)",
+    // ── View 4: 90-Day Roadmap (Time-Based) ───────────────────
+    v4_title: "90-Day Execution Roadmap — Synchronized Phased Delivery",
+    v4_subtitle: "Structured around synchronized time-based stages to ensure seamless alignment across Governance, ERP, Supply Chain, and Brand Architecture at every milestone.",
+    roadmap_section_title: "90-Day Execution Roadmap — Synchronized Phased Delivery",
+    roadmap_section_subtitle: "Structured around synchronized time-based stages to ensure seamless alignment across Governance, ERP, Supply Chain, and Brand Architecture at every milestone.",
+    btn_explore_deliverables: "Explore the 16 Contractual SOW Deliverables →",
+
+    // ── View Deliverables: 16 SOW Deliverables ────────────────
+    deliverables_section_title: "Tangible Contractual Deliverables (Unified SOW)",
+    deliverables_section_subtitle: "Approved package of governance documents, enterprise systems, and physical commercial assets scheduled for formal handover.",
 
     // ── View 5: Lean Workforce ─────────────────────────────────
     v5_title: "Lean Workforce — 13 Staff + Outsourcing",
@@ -201,6 +221,8 @@ window.portalData = {
 
     // ── Modals & Toast ─────────────────────────────────────────
     modal_close: "Close Window",
+    modal_prev: "Previous",
+    modal_next: "Next",
     modal_scope_title: "Executive Action Scope",
     modal_example_title: "Concrete Factory Example (Al Rusayl Plant)",
     modal_output_title: "Tangible Handover Deliverable to Ownership",
@@ -221,75 +243,68 @@ window.portalData = {
     chaotic: [
       {
         icon: "🚨",
-        title_ar: "الإنفاق الأعمى على الطباعة والتغليف",
-        title_en: "Blind Packaging & Printing Expenditure",
-        desc_ar: "التعاقد مع مطابع في دبي وعُمان لطباعة رولات وكراتين بآلاف الريالات دون فحص مخبري للمنتج أو احتساب التكلفة الفعلية ومطابقة مواصفات GSO.",
-        desc_en: "Committing thousands of OMR to packaging printers in Dubai and Oman without lab test clearances, actual yield costing, or GSO regulatory compliance."
+        title_ar: "التعاقد المبكر على التغليف قبل الفحص المخبري",
+        title_en: "Premature Packaging Contracting Prior to Lab Validation",
+        desc_ar: "لوحظ وجود تحرك مبكر في إجراءات التعاقد على مواد التغليف والطباعة الخارجية بالتوازي مع عدم استكمال الفحوصات المخبرية النهائية للمنتج. ورغم محدودية الأثر المالي المباشر في المرحلة الحالية، إلا أن هذا التداخل يعكس غياب 'بوابات الاعتماد المرحلية' (Stage-Gate Controls) بين الجودة والمشتريات، مما قد يعرّض الشركة مستقبلاً لمخاطر هدر المطبوعات أو تأخير الإطلاق حال طلب المعمل أي تعديل فني في المواصفات.",
+        desc_en: "Early initiation of external packaging and printing contracts was observed in parallel with pending final laboratory product testing. While the immediate financial exposure is limited at this stage, this overlap highlights the absence of Stage-Gate Controls between Quality Assurance and Procurement, potentially exposing the company to packaging write-offs or launch delays if lab results require technical adjustments."
       },
       {
         icon: "⚠️",
-        title_ar: "غياب جدول الصلاحيات ومصيدة التوقيعات",
-        title_en: "Absence of DoA & Signature Traps",
-        desc_ar: "المالك والفاضل/ سامح حسني يوقعان على سندات صرف وفواتير مشتريات عشوائية دون مطابقة ثلاثية (PO + GRN + Invoice)، مما يعرضهما لمخاطر مالية مباشرة.",
-        desc_en: "Owner and Mr. Sameh Hosni signing unchecked payment vouchers without 3-way matching (PO + GRN + Invoice), exposing them to direct financial leakages."
+        title_ar: "مركزية التوقيع وغياب مصفوفة الصلاحيات الموثقة (النمط السابق)",
+        title_en: "Centralized Sign-Off & Absence of Documented Delegation of Authority (Legacy Pattern)",
+        desc_ar: "اعتمدت الدورة المستندية والمالية في المرحلة التشغيلية السابقة على مركزية التوقيع واعتماد سندات الصرف بشكل مباشر دون وجود 'مصفوفة صلاحيات مالية وإدارية' (Delegation of Authority - DoA) موثقة ومعتمدة. ورغم أن هذا النمط كان يهدف لتسريع وتيرة العمل اليومي، إلا أنه أدى إلى تداخل الأدوار التنفيذية والرقابية؛ مما يجعل تأسيس حوكمة مالية واضحة وتحديد سقوف الصلاحيات والمسؤوليات (Segregation of Duties) خطوة أساسية لتمكين الإدارة الحالية من العمل بكفاءة وشفافية.",
+        desc_en: "The documentary and financial cycle in the previous operating phase relied on centralized direct sign-offs for payment vouchers without a documented Delegation of Authority (DoA) matrix. Although intended to accelerate daily workflows, this approach created overlaps between executive and control roles—making structured financial governance and Segregation of Duties essential to empower current management with clarity and accountability."
       },
       {
         icon: "📉",
-        title_ar: "البيع بالخسارة لجهل تكلفة الـ SKU",
-        title_en: "Selling at Loss Due to Unknown SKU Costing",
-        desc_ar: "تسعير المنتجات بناءً على أسعار المنافسين دون معرفة تكلفة الطن، نسبة هدر التعبئة (Scrap Rate)، استهلاك الكهرباء، وأجور التعبئة بالجرام.",
-        desc_en: "Pricing finished products based on competitors' rates without knowing exact raw material ton costs, packing scrap rates, power draw, or per-gram labor."
+        title_ar: "تسعير الأصناف دون منظومة تكلفة معيارية وفعلية (SKU Costing)",
+        title_en: "Product Pricing Without a Documented Standard & Actual SKU Costing System",
+        desc_ar: "تسعير بعض الأصناف (SKUs) دون هامش ربحية حقيقي نتيجة غياب منظومة موثقة لاحتساب التكلفة المعيارية والفعلية للوحدة (Accurate SKU Costing)، وعدم ربط سياسات التسعير بتقلبات تكلفة مدخلات الإنتاج والتشغيل.",
+        desc_en: "Certain SKUs were priced without protected profit margins due to the absence of a documented system for calculating standard and actual unit costs (Accurate SKU Costing) and linking pricing policies to input and operational cost fluctuations."
       },
       {
         icon: "❄️",
-        title_ar: "خرق سلسلة التبريد للجبنة وضياع المخزون",
-        title_en: "Cold Chain Violations & Inventory Write-Offs",
-        desc_ar: "تخزين جبنة الموتزاريلا دون سجلات حرارة يومية موثقة (-18°م)، وتكديس المواد الخام دون تطبيق نظام ما يدخل أولاً يخرج أولاً (FEFO).",
-        desc_en: "Storing Mozzarella cheese without daily temperature audit logs (-18°C), causing spoilage, alongside dry-stock pileups ignoring strict FEFO rotation."
-      },
-      {
-        icon: "💻",
-        title_ar: "اشتراك Odoo مهدر واعتماد كامل على إكسل",
-        title_en: "Wasted Odoo Subscription & Excel Dependency",
-        desc_ar: "دفع اشتراكات سنوية لنظام Odoo دون تفعيل فعلي للمستودعات أو الإنتاج أو نقاط البيع، وإدارة مصنع كامل عبر شيتات إكسل مبعثرة وسهلة التلاعب.",
-        desc_en: "Paying annual Odoo subscription licenses without activating manufacturing, inventory, or accounting, leaving operations stranded on error-prone Excel sheets."
+        title_ar: "إدارة المخزون التقليدية وغياب التتبع المنهجي (FIFO/FEFO)",
+        title_en: "Traditional Inventory Handling & Absence of Batch Traceability (FIFO/FEFO)",
+        desc_ar: "إدارة مخزون المواد الخام والمنتجات الجاهزة للنشاط السابق (الحليب البودرة، الشاي، والقهوة) بطرق تقليدية تفتقر إلى التتبع الدقيق للتشغيلات (Batch Tracking) وتطبيق قواعد الصرف المنهجي (FIFO/FEFO)، مما يرفع احتمالات الهدر، فروقات الجرد، وتقادم المخزون.",
+        desc_en: "Raw materials and finished goods for the legacy product lines (milk powder, tea, and coffee) were managed through traditional methods lacking Batch Tracking and systematic stock rotation (FIFO/FEFO), increasing risks of shrinkage, inventory variances, and stock obsolescence."
       }
     ],
     omni: [
       {
         icon: "🛡️",
-        title_ar: "بوابة الجودة والتكلفة المانعة للطباعة",
-        title_en: "Enforced Quality & Cost Pre-Print Gate",
-        desc_ar: "حظر إصدار أوامر الطباعة حتى اجتياز الفحص المخبري، مطابقة اشتراطات GSO الخليجية، واعتماد كلفة الـ SKU لتحقيق هامش ربح أدنى 22%.",
-        desc_en: "Mandatory embargo on cylinder engraving and printing until passing accredited lab tests, GSO compliance checks, and a guaranteed minimum 22% gross margin."
+        title_ar: "تطبيق بوابات الاعتماد المرحلية (Stage-Gate Controls)",
+        title_en: "Enforcing Stage-Gate Controls",
+        desc_ar: "حظر إصدار أي أمر شراء نهائي لمواد التعبئة والتغليف إلا بعد اعتماد شهادة الفحص المخبري (Lab Sign-off) والمواصفات الفنية وبيانات البطاقة الغذائية.",
+        desc_en: "Prohibiting final purchase orders for packaging materials until Lab Sign-off, technical specifications, and nutritional labeling data are formally approved."
       },
       {
         icon: "⚖️",
-        title_ar: "مصفوفة DoA الرقابية والمطابقة الثلاثية",
-        title_en: "Disciplined DoA & Strict 3-Way Matching",
-        desc_ar: "تحديد سقف مالي صارم وحماية المالك والإدارة بآلية الفحص الثلاثي (أمر شراء معتمد + محضر استلام أمين المستودع + فاتورة المورد الأصلية).",
-        desc_en: "Strict financial delegation protecting the Owner and Mr. Sameh Hosni, locking payments to 3-way verification: approved PO + signed GRN + vendor invoice."
+        title_ar: "تفعيل مصفوفة الصلاحيات المؤسسية (DoA)",
+        title_en: "Activating Corporate Delegation of Authority (DoA)",
+        desc_ar: "بناء وتوثيق جدول صلاحيات مالية وإدارية واضح يحدد سقوف الاعتماد ويفصل بين مهام الطلب، المراجعة، والصرف (Segregation of Duties) لحماية الكيان التجاري.",
+        desc_en: "Establishing a documented financial and administrative authority matrix defining approval thresholds and enforcing Segregation of Duties across requisition, review, and payment to protect the commercial entity."
       },
       {
         icon: "📊",
-        title_ar: "محرك التكلفة الفعلية والتقرير اليومي 5:00 عصراً",
-        title_en: "Actual SKU Costing Engine & Daily 5 PM Flash",
-        desc_ar: "شجرة تكاليف دقيقة بالجرام والمليلتر، مع استلام المالك يومياً في تمام 5:00 عصراً تقرير ملخص رقمي بصفحة واحدة (إنتاج، مبيعات، نقدية، وهدر).",
-        desc_en: "Gram-level BOM costing engine, paired with a daily 1-page executive flash report delivered to Owner at 5:00 PM summarizing output, sales, cash, and scrap."
+        title_ar: "هندسة تسعير وتكلفة الوحدات (SKU Costing Model)",
+        title_en: "Engineering SKU Costing & Margin Protection",
+        desc_ar: "بناء نموذج محاسبي لاحتساب التكلفة المعيارية والفعلية لكل صنف وربطها بهوامش ربحية محمية قبل اعتماد قوائم الأسعار التجارية.",
+        desc_en: "Building an accounting cost model to calculate standard and actual unit costs per SKU, linking them directly to protected margin thresholds prior to price list approval."
       },
       {
         icon: "🌡️",
-        title_ar: "سلسلة التبريد المحكمة وتعيين أمين مستودع مستقل",
-        title_en: "Audited Cold Chain (-18°C) & Independent Storekeeper",
-        desc_ar: "سجلات حرارة رقمية يومية للموتزاريلا (-18°م)، تفعيل رقابة FEFO الصارمة، وفصل صلاحيات أمين المستودع المستقل عن عمال الإنتاج.",
-        desc_en: "Automated daily digital temperature logs (-18°C) for Mozzarella, strict FEFO dispatch, and hiring an independent storekeeper separated from production."
+        title_ar: "ضبط سلسلة التبريد والتحكم البيئي للمخازن",
+        title_en: "Cold Chain & Warehouse Climate Governance",
+        desc_ar: "تأسيس سجلات رقابة إلزامية لدرجات الحرارة والرطوبة تغطي دورة التخزين والنقل للجبن الموتزاريلا (كمثال رئيسي) وكافة المواد الخام والمنتجات الحساسة للحرارة والرطوبة، مع تطبيق التتبع بالتشغيلة وقواعد الصرف (FIFO/FEFO).",
+        desc_en: "Establishing mandatory temperature and humidity control logs covering storage and transit for mozzarella cheese (as a primary example) as well as all temperature- and moisture-sensitive dry goods, integrated with Batch Tracking and FIFO/FEFO dispatch rules."
       },
       {
         icon: "🚀",
-        title_ar: "إعادة إطلاق Odoo ERP ولوحة تحكم حية (BI)",
-        title_en: "Active Odoo ERP Relaunch & Live BI Dashboard",
-        desc_ar: "تفعيل 8 رخص موجهة (مستودعات، تصنيع، مبيعات، محاسبة) مع جهاز بصمة مجاني موحد للعمال، وربط العمليات بلوحة تحكم حية للمالك على هاتفه.",
-        desc_en: "Configuring 8 optimized Odoo user seats + free unified attendance kiosk, retiring all manual spreadsheets in favor of a live mobile Executive BI dashboard."
+        title_ar: "إعادة هيكلة وتفعيل منظومة الـ ERP الرشيقة (Lean ERP Activation)",
+        title_en: "Lean ERP Restructuring & Activation",
+        desc_ar: "تفعيل الوحدات التشغيلية الأساسية الأربعة (المستودعات، المبيعات، المحاسبة، وتخطيط الإنتاج) وربطها بصلاحيات محددة على قدر فريق العمل الحالي فقط، لضمان تدفق البيانات اللحظي ومنع العمل خارج النظام دون تحمل تكاليف رخص إضافية.",
+        desc_en: "Activating the four core operational modules (Inventory, Sales, Accounting, and Production Planning) configured strictly for the current active team, ensuring real-time data flow and eliminating off-system work without unnecessary license overhead."
       }
     ]
   },
@@ -1170,15 +1185,15 @@ window.portalData = {
     currentStaff: [
       {
         icon: "👑",
-        title_ar: "المالك / المدير العام",
-        title_en: "Owner / Executive Director",
+        title_ar: "المدير العام / الإدارة التنفيذية",
+        title_en: "General Manager / Executive Leadership",
         category_ar: "القيادة",
         category_en: "Leadership"
       },
       {
         icon: "🤝",
-        title_ar: "أ. سامح حسني — قائد التطوير التجاري وسلاسل الإمداد",
-        title_en: "Mr. Sameh Hosni — Commercial & Supply Chain Lead",
+        title_ar: "قائد التطوير التجاري وسلاسل الإمداد",
+        title_en: "Commercial & Supply Chain Lead",
         category_ar: "التطوير التجاري وسلاسل الإمداد",
         category_en: "Commercial & Supply Chain"
       },
