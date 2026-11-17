@@ -32,6 +32,8 @@ window.portalData = {
     v_workforce_subtitle: "الهيكل التنظيمي المعتمد للمصنع: القيادة الإشرافية والتشغيلية (11 كادراً) بالتكامل مع أذرع التعهيد الخارجي.",
     v_outsourcing_title: "أذرع التنفيذ الخارجي (External Execution Arms)",
     v_outsourcing_subtitle: "4 أذرع متخصصة تعمل بالتوازي مع الكادر الداخلي لضمان أعلى درجات الاحترافية والتكلفة المرنة.",
+    v_future_title: "8. الرؤية المستقبلية 🚀",
+    v_future_subtitle: "منظومة الأتمتة الكاملة وخارطة التحول الرقمي الموسعة لما بعد الـ 90 يوماً",
     lang_toggle: "English",
 
     // ── Hero Section ───────────────────────────────────────────
@@ -147,6 +149,8 @@ window.portalData = {
     v_workforce_subtitle: "Approved organizational structure: Supervisory and operational staff (11 members) seamlessly integrated with external outsourcing arms.",
     v_outsourcing_title: "External Execution Arms (Outsourcing)",
     v_outsourcing_subtitle: "4 specialized execution partners working concurrently with internal staff to ensure maximum professional agility and cost elasticity.",
+    v_future_title: "8. Future Vision 🚀",
+    v_future_subtitle: "Comprehensive Automation Framework & Full Digital Transformation Beyond 90 Days",
     lang_toggle: "عربي",
 
     // ── Hero Section ───────────────────────────────────────────
